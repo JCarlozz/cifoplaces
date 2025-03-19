@@ -1,4 +1,4 @@
-<?php
+ <?php
 
 /** Clase User
  *
@@ -6,10 +6,16 @@
  *
  * @author Robert Sallent <robertsallent@gmail.com>
  * 
- * Última revisión: 05/03/2025
+ * Última revisión: 05/03/2025implements Authenticable
  */
 
 class User extends Model implements Authenticable{
+    
+    public function productos(){
+    
+        return $this->hasMany('Producto', 'idusers'); // Especifica 'idusers' como clave foránea
+    }
+    
 
     use Authorizable; // usa el trait authorizable
     
@@ -77,7 +83,9 @@ class User extends Model implements Authenticable{
             $usuario->parseJsonFields();
         
         return $usuario;
-    }   
+    }
+    
+    
 }
     
     
