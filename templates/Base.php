@@ -174,6 +174,12 @@ class Base implements TemplateInterface{
         $html = "<menu class='menu'>";
         $html .=   "<li><a href='/'>Inicio</a></li>";
         
+        $html .=   "<li><a href='/Place/list'>Lugares</a></li>";
+        
+        $html .=   "<li><a href='/Place/create'>Nuevo lugar</a></li>";
+        
+        $html .=   "<li><a href='/Contacto'>Contacto</a></li>";
+        
         // Enlace a los ejemplos de maquetación.
         // Lo eliminaremos en producción junto con la carpeta mvc/views/examples y el ExampleController
         $html .=   "<li><a href='/Example'>Ejemplos de maquetación</a></li>";

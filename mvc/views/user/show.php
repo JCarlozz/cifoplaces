@@ -34,11 +34,11 @@
     		<?php }?>
     		<section id="detalles" class="flex-container gap2">
     			<div class="flex2">
-    			<h2><?=$user->nombreyapellidos?></h2>
+    			<h2><?=$user->displayname?></h2>
     			
     			
     			
-    			<p><b>Nombre:</b>		<?=$user->nombreyapellidos?></p>
+    			<p><b>Nombre:</b>		<?=$user->displayname?></p>
     			<?php if(Login::check()) { ?>
     			<p><b>Email:</b>		<?=$user->email?></p>
     			<p><b>Teléfono:</b>		<?=$user->phone?></p>
@@ -53,9 +53,9 @@
     			
     			</div>
     			<figure class="flex1 centrado p2">
-        			<img src="<?=USER_IMAGE_FOLDER.'/'.($user->foto ?? DEFAULT_USER_IMAGE)?>"
-        				class="cover enlarge-image" alt="Foto del usuario <?=$user->nombreyapellidos?>">    					
-        			<figcaption>Foto del usuario <?="$user->nombreyapellidos"?></figcaption>
+        			<img src="<?=USERS_IMAGE_FOLDER.'/'.($user->foto ?? DEFAULT_USERS_IMAGE)?>"
+        				class="cover enlarge-image" alt="Foto del usuario <?=$user->displayname?>">    					
+        			<figcaption>Foto del usuario <?="$user->displayname"?></figcaption>
         			<?php if($user->foto) {?>
         			<form method="POST" action="/User/dropcover" class="no-border">
         				<input type="hidden" name="id" value="<?=$user->id?>">
@@ -67,7 +67,7 @@
     		
     		<section>
     									
-    			 <h2>Productos de <?= $user->nombreyapellidos?></h2>
+    			 <h2>Productos de <?= $user->displayname?></h2>
     				<?php  if(Login::user()->id ==  $user->id ){?>  			
     				<a class="button" href="/Producto/create/<?=$producto->idusers?>">
     					Nuevo producto

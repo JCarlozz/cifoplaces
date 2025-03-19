@@ -7,7 +7,7 @@
 		<!-- META -->
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta name="description" content="Portada en <?= APP_NAME ?>">
-		<meta name="author" content="Robert Sallent">
+		<meta name="author" content="Carlos Carceller">
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 		
 		<!-- FAVICON -->
@@ -26,7 +26,7 @@
 		<?= $template->messages() ?>
 		
 		<main>
-			<?php if(Login::role('ROLE_ADMIN')) { ?>
+			<?php// if(Login::role('ROLE_ADMIN')) { ?>
     		<?php if ($users) { ?>
     		
     		<div class="right">
@@ -40,16 +40,14 @@
     		}else{
     		    echo $template->filterForm(
     		        [
-    		            'Nombre'=>'nombreyapellidos',
+    		            'Nombre'=>'displayname',
                         'Email'=>'email',
-    		            'Teléfono'=>'phone',
-    		            'Ciudad'=>'poblacion'
+    		            'Teléfono'=>'phone'
     		        ],
     		        [
-    		            'Nombre'=>'nombreyapellidos',
+    		            'Nombre'=>'displayname',
     		            'Email'=>'email',
-    		            'Teléfono'=>'phone',
-    		            'Ciudad'=>'poblacion'    		            
+    		            'Teléfono'=>'phone'    		                		            
     		        ],
     		        'Nombre',
     		        'Nombre'    		        
@@ -70,12 +68,12 @@
     				<tr>
     					<td class="centrado">
     						<a href='/User/show/<?=$user->id?>'>
-    							<img src="<?=USER_IMAGE_FOLDER.'/'.($user->foto ?? DEFAULT_USER_IMAGE)?>"
-    								class="table-image" alt="Portada de <?= $user->nombreyapellidos ?>"
-    								title="Portada de <?= $user->nombreyapellidos ?>">    						
+    							<img src="<?=USERS_IMAGE_FOLDER.'/'.($user->foto ?? DEFAULT_USERS_IMAGE)?>"
+    								class="table-image" alt="Portada de <?= $user->displayname ?>"
+    								title="Portada de <?= $user->displayname ?>">    						
     						</a>
     					</td>
-    					<td><a href='/User/show/<?= $user->id ?>'><?=$user->nombreyapellidos?></a></td>
+    					<td><a href='/User/show/<?= $user->id ?>'><?=$user->displayname?></a></td>
     					<td><?= $user->email ?></td>
     					<td><?= $user->phone ?></td>
     					<td><?= implode(', ', $user->roles); ?></td>
@@ -102,7 +100,7 @@
     				<a class="button" onclick="history.back()">Atrás</a>
     			</div>
     		
-    		<?php } ?>
+    		<?php //} ?>
     		
 		</main>
 		

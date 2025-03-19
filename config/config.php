@@ -132,7 +132,8 @@ define('USER_PROVIDER', 'User');
 // Roles para los usuarios. Podemos crear o eliminar roles según las necesidades.
 define('USER_ROLES', [
     'Usuario'       => 'ROLE_USER',
-    'Administrador' => 'ROLE_ADMIN',    
+    'Administrador' => 'ROLE_ADMIN',
+    'Test'          => 'ROLE_TEST',
     'Bloqueado'     => 'ROLE_BLOCKED'
 ]);
 
@@ -143,11 +144,15 @@ define('BLOCKED_MESSAGE', "Has sido bloqueado por un administrador, si considera
 // redirección tras el intento de Login del usuario bloqueado
 define('BLOCKED_REDIRECT', '/contacto');
 
+
 // carpeta para las imágenes de los usuarios
 define('USER_IMAGE_FOLDER','/images/users');
+define('FOTO_IMAGE_FOLDER','/images/foto');
+
 
 // imagen por defecto para los usuarios que no tengan
 define('DEFAULT_USER_IMAGE', 'default.png');
+define('DEFAULT_FOTO_IMAGE', 'default.png');
 
 
 
@@ -207,13 +212,6 @@ define('RESULTS_PER_PAGE', 10);  // Número de resultados por página
 // carpeta por defecto para la subida de ficheros
 define('UPLOAD_FOLDER', '../storage'); 
 
-// carpeta para las imágenes de los usuarios
-define('USERS_IMAGE_FOLDER','/images/users');
-define('FOTO_IMAGE_FOLDER','/images/foto');
-
-// imagen por defecto para los usuarios que no tengan
-define('DEFAULT_USERS_IMAGE', 'default.png');
-define('DEFAULT_FOTO_IMAGE', 'default.png');
 
 // tamaño máximo para los ficheros subidos en bytes (0 sin límite)
 define('UPLOAD_MAX_SIZE', 0);          

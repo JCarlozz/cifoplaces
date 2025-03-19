@@ -7,38 +7,38 @@ class PlaceController extends Controller{
     
     public function list(int $page = 1){
         //analiza si hay filtro
-        $filtro = Filter::apply('productos');
+        $filtro = Filter::apply('places');
         
         //recupera el número de resultados por página
         $limit = RESULTS_PER_PAGE;
         
         //si hay filtro
         if($filtro){
-            //recupera los productos que cumplen los criterios del filtro
-            $total = Producto::filteredResults($filtro);
+            //recupera los lugares que cumplen los criterios del filtro
+            $total = Place::filteredResults($filtro);
             
             //crea el objeto paginador
-            $paginator = new Paginator('/Producto/list', $page, $limit, $total);
+            $paginator = new Paginator('/Place/list', $page, $limit, $total);
             
-            //recupera los productos que cumplen con los criterios
-            $productos = Producto::filter($filtro, $limit, $paginator->getOffset());
+            //recupera los lugares que cumplen con los criterios
+            $places = Place::filter($filtro, $limit, $paginator->getOffset());
             
             //si no hay filtro
         }else{
             
             //recupera el total de libros
-            $total = Producto::total();
+            $total = Place::total();
             
             //crea el objeto paginador
-            $paginator = new Paginator('/Producto/list', $page, $limit, $total);
+            $paginator = new Paginator('/Place/list', $page, $limit, $total);
             
             //recupera todos los libros
-            $productos = Producto::orderBy('titulo', 'ASC', $limit, $paginator->getOffset());
+            $places = Place::orderBy('name', 'ASC', $limit, $paginator->getOffset());
             
         }
         //carga la vista
-        return view('producto/list', [
-            'productos' => $productos,
+        return view('place/list', [
+            'places'    => $places,
             'paginator' => $paginator,
             'filtro'    => $filtro
         ]);
@@ -46,22 +46,24 @@ class PlaceController extends Controller{
     
     public function show(int $id=0){
         
-        $producto = Producto::findOrFail($id, "No se encontró el producto indicado.");
+        $place = V_comment::findOrFail($id, "No se encontró el lugar indicado.");
+        
+        //$comments = $place->hasAny('comment', 'idplace');
         
         
-        return view('producto/show',[
-            'producto'         => $producto
+        return view('place/show',[
+            'place'         => $place
+            //'comment'       =>$comments
         ]);
     }
     
     public function create(){
         
-        Auth::check();
+        //Auth::check();
         
         
-        return view('producto/create', [
-            'producto' => new Producto()
-            
+        return view('place/create', [
+            'place' => new Place()            
         ]);
     }
     
@@ -75,15 +77,16 @@ class PlaceController extends Controller{
         if (!request()->has('guardar'))
             throw new FormException('No se recibió el formulario');
             
-            $producto = new Producto();       //crea el producto
+            $place = new Place();       //crea el lugar
             
             //toma los datos que llegan por POST
-            $producto->idusers      =request()->post('idusers');
-            $producto->titulo       =request()->post('titulo');
-            $producto->descripcion  =request()->post('descripcion');
-            $producto->precio       =request()->post('precio');
-            $producto->foto         =request()->post('foto');
-            $producto->estado       =request()->post('estado');
+            $place->name            =request()->post('name');
+            $place->type            =request()->post('type');
+            $place->location        =request()->post('location');
+            $place->description     =request()->post('description');
+            $place->mainpicture     =request()->post('mainpicture');
+            $place->latitude        =request()->post('latitude');
+            $place->longitude       =request()->post('longitude');
             
             
             //intenta guardar el libro, en caso que la inserción falle vamos a
@@ -91,46 +94,46 @@ class PlaceController extends Controller{
             
             try{
                 
-                if ($errores = $producto->validate())
+                if ($errores = $place->validate())
                     throw new ValidationException(
                         "<br>".arrayToString($errores, false, false, ".<br>")
                         );
                     
                     //guarda el libro en la base de datos
-                    $producto->save();
+                    $place->save();
                     
                     
                     //recupera la portada como objeto UploadFile es null si no llega)
                     $file = request()->file(
-                        'foto',
+                        'mainpicture',
                         8000000,
                         ['image/png', 'image/jpeg', 'image/gif', 'image/webp']
                         );
                     
                     //si hay fichero, lo guardo y actualizamos el campo "portada"
                     if ($file){
-                        $producto->foto = $file->store('../public/'.PRO_IMAGE_FOLDER, 'PRO_');
-                        $producto->update();
+                        $place->mainpicture = $file->store('../public/'.FOTO_IMAGE_FOLDER, 'FOTO_');
+                        $place->update();
                     }
                     //flashea un mensaje de éxito en sesión
-                    Session::success("Guardado del producto $producto->titulo correcto.");
+                    Session::success("Guardado del lugar $place->name correcto.");
                     
                     //redirecciona a los detalles del nuevo libro
-                    return redirect("/Producto/show/$producto->id");
+                    return redirect("/Place/show/$place->id");
                     
                     //si hay un problema de validación...
             }catch (ValidationException $e){
                 
                 Session::error("Errores de validación.".$e->getMessage());
                 
-                //regresa al formulario de ceación del producto
-                return redirect("/Producto/create");
+                //regresa al formulario de ceación del lugar
+                return redirect("/Place/create");
                 
-                //si falla el guardado del producto
+                //si falla el guardado del lugar
             }catch (SQLException $e){
                 
                 //flashea un mensaje de error en sesión
-                Session::error("No se pudo guardar el producto $producto->titulo.");
+                Session::error("No se pudo guardar el lugar $place->name.");
                 
                 //si está en modo DEBUG vuelve a lanzar la excepción
                 //esto hará que acabemos en la página de error
@@ -139,17 +142,17 @@ class PlaceController extends Controller{
                     
                     //regresa al formulario de creación de libro
                     //los valores no deberián haberse borrado si usamos los helpers old()
-                    return redirect("/Producto/create");
+                    return redirect("/Place/create");
                     
             }catch(UploadException $e){
                 
-                Session::warning("El producto se guardó correctamente, pero no se pudo
+                Session::warning("El lugar $place->name se guardó correctamente, pero no se pudo
                                 subir el fichero de imagen.");
                 
                 if(DEBUG)
                     throw new UploadException($e->getMessage());
                     
-                    redirect("/Producto/edit/$producto->id");
+                    redirect("/Place/edit/$place->id");
             }
     }
     
@@ -158,11 +161,11 @@ class PlaceController extends Controller{
         //Auth::role('ROLE_LIBRARIAN');
         
         //busca el libro con ese ID
-        $producto = Producto::findOrFail($id, "No se encontró el producto.");
+        $place = Place::findOrFail($id, "No se encontró el lugar.");
         
         //retorna una ViewResponse con la vista con la vista con el formulario de edición
-        return view('producto/edit',[
-            'producto'=> $producto
+        return view('place/edit',[
+            'place'=> $place
         ]);
     }
     
@@ -175,44 +178,48 @@ class PlaceController extends Controller{
             
             $id= intval(request()->post('id'));     //recuperar el ID vía POST
             
-            $producto= Producto::findOrFail($id, "No se ha encontrado el producto.");
+            $place= Place::findOrFail($id, "No se ha encontrado el lugar.");
             
-            $producto->titulo       =request()->post('titulo');
-            $producto->descripcion  =request()->post('descripcion');
-            $producto->precio       =request()->post('precio');
-            $producto->foto         =request()->post('foto');
-            $producto->estado       =request()->post('estado');
+                        
+            //toma los datos que llegan por POST
+            $place->name            =request()->post('name');
+            $place->type            =request()->post('type');
+            $place->location        =request()->post('location');
+            $place->description     =request()->post('description');
+            $place->mainpicture     =request()->post('mainpicture');
+            $place->latitude        =request()->post('latitude');
+            $place->longitude       =request()->post('longitude');
             
             //intenta actualizar el libro
             try{
-                $producto->update();
+                $place->update();
                 
                 $file = request()->file(
-                    'portada',
+                    'mainpicture',
                     8000000,
                     ['image/png', 'image/jpeg', 'image/gif', 'image/webp']
                     );
                 
                 //si hay fichero, lo guardo y actualizamos el campo "portada"
                 if ($file){
-                    if ($producto->foto)    //elimina el fichero anterior (si lo hay)
-                        File::remove('../public/'.PRO_IMAGE_FOLDER.'/'.$producto-foto);
+                    if ($place->mainpicture)    //elimina el fichero anterior (si lo hay)
+                        File::remove('../public/'.FOTO_IMAGE_FOLDER.'/'.$place->mainpicture);
                         
-                        $producto->foto = $file->store('../public/'.PRO_IMAGE_FOLDER, 'PRO_');
-                        $producto->update();
+                        $place->mainpicture = $file->store('../public/'.FOTO_IMAGE_FOLDER, 'PLA_');
+                        $place->update();
                 }
-                Session::success("Actualización del producto $producto->titulo correcta.");
-                return redirect("/producto/show/$id");
+                Session::success("Actualización del lugar $place->name correcta.");
+                return redirect("/Place/show/$id");
                 
                 //si se produce un error al guardar el libro...
             }catch (SQLException $e){
                 
-                Session::error("Hubo errores en la actualización del producto $producto->titulo.");
+                Session::error("Hubo errores en la actualización del lugar $place->name.");
                 
                 if(DEBUG)
                     throw new SQLException($e->getMessage());
                     
-                    return redirect("/Producto/edit/$id");
+                    return redirect("/Place/edit/$id");
                     
             }catch (UploadException $e){
                 Session::warning("Cambios guardados, pero no se modificó la portada.");
@@ -220,7 +227,7 @@ class PlaceController extends Controller{
                 if(DEBUG)
                     throw new UploadException($e->getMessage());
                     
-                    return redirect("/Producto/edit/$id");
+                    return redirect("/Place/edit/$id");
             }
     }
     
@@ -228,10 +235,10 @@ class PlaceController extends Controller{
         
         //Auth::role('ROLE_LIBRARIAN');
         
-        $producto = Producto::findOrFail($id, "No existe el producto.");
+        $place = Place::findOrFail($id, "No existe el lugar.");
         
-        return view('producto/delete', [
-            'producto'=>$producto
+        return view('place/delete', [
+            'place' =>$place
         ]);
     }
     
@@ -244,38 +251,38 @@ class PlaceController extends Controller{
             throw new FormException('No se recibió la confirmación.');
             
             $id = intval(request()->post('id'));        //recupera el identificador
-            $producto = Producto::findOrFail($id);            //recupera el producto
+            $place = Place::findOrFail($id);            //recupera el lugar
             
             //sie lelibro tiene ejemplares, no permetimos el borrado
             //más adelante ocultaremos el botón de "Borrar" en estos casos
             //para que no el usuario no llegue al formulario de confirmación
             
             try{
-                $producto->deleteObject();
+                $place->deleteObject();
                 
-                if ($producto->foto)
-                    File::remove('../public/'.PRO_IMAGE_FOLDER.'/'.$producto->foto, true);
+                if ($place->mainpicture)
+                    File::remove('../public/'.FOTO_IMAGE_FOLDER.'/'.$place->mainpicture, true);
                     
                     
-                    Session::success("Se ha borrado el producto $producto->titulo.");
-                    return view("/Producto/list");
+                    Session::success("Se ha borrado el lugar $place->name.");
+                    return view("/Place/list");
                     
             }catch (SQLException $e){
                 
-                Session::error("No se pudo borrar el producto $producto->titulo.");
+                Session::error("No se pudo borrar el lugar $place->name.");
                 
                 if (DEBUG)
                     throw new SQLException($e->getMessage());
                     
-                    return redirect("/Producto/delete/$id");
+                    return redirect("/Place/delete/$id");
                     
             }catch (FileException $e){
-                Session::warning("Se eliminó el producto pero no se pudo eliminar el fichero del disco.");
+                Session::warning("Se eliminó el lugar pero no se pudo eliminar el fichero del disco.");
                 
                 if (DEBUG)
                     throw new FileException($e->getMessage());
                     
-                    return redirect("/Producto/list");
+                    return redirect("/Place/list");
                     
             }
     }

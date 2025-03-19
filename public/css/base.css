@@ -500,6 +500,7 @@ figure{
 
 figure img{
 	width: 96%;
+	border-radius: 15px;
 }
 
 figcaption{
@@ -525,6 +526,69 @@ figure.x-large,  img.x-large		{ max-width: 800px; }
 img.baseline	{ vertical-align: baseline }
 img.middle		{ vertical-align: middle }
 img.text-top	{ vertical-align: text-top }
+
+.flex2{
+	border-radius: 3px;
+}
+
+.flex-container-galeria {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Tres columnas */
+    gap: 20px; /* Espacio entre elementos */
+    padding: 20px;
+}
+
+.flex-item {
+	display: flex;
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center; /* Centra verticalmente */
+    overflow: hidden;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+}
+
+.flex-item:hover {
+    transform: scale(1.05); /* Efecto de zoom al pasar el ratón */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.flex-item img {
+    max-width: 100%; /* Asegura que la imagen no se desborde */
+    max-height: 100%; /* Asegura que la imagen no se desborde */
+    object-fit: cover; /* Ajusta la imagen para cubrir el contenedor */
+    border-radius: 8px;
+}
+
+.descrip {
+    position: absolute;
+    top: 100%; /* Inicialmente fuera de la vista */
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7); /* Fondo semitransparente */
+    color: #fff;
+    display: flex;
+    flex-direction: column; /* Apila los elementos en una columna */
+    justify-content: center; /* Centra verticalmente */
+    align-items: center; /* Centra horizontalmente */
+    text-align: center;
+    padding: 10px;
+    transition: top 0.3s ease;
+    border-radius: 8px;
+}
+
+/* Mostrar el texto al pasar el ratón */
+.flex-item:hover .descrip {
+    top: 0; /* Mover el overlay hacia arriba */
+}
+
+/* Estilos para el texto */
+.descrip p {
+    font-size: 1.2em;
+    margin: 0;
+}
 
 
 /* Carátulas (para las listas de productos o detalles) ---------------*/

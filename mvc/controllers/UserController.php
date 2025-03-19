@@ -10,7 +10,7 @@
         
         public function list(int $page = 1){
                         
-            Login::isAdmin();
+            //Login::isAdmin();
             
             //analiza si hay filtro
             $filtro = Filter::apply('users');
@@ -39,7 +39,7 @@
                 $paginator = new Paginator('/User/list', $page, $limit, $total);
                 
                 //recupera todos los usuarios
-                $users = User::orderBy('nombreyapellidos', 'ASC', $limit, $paginator->getOffset());
+                $users = User::orderBy('displayname', 'ASC', $limit, $paginator->getOffset());
                 
             }
             //carga la vista
@@ -108,7 +108,7 @@
             if ($user->password != $repeat)
                 throw new ValidationException("Las claves no coinciden.");
             
-            $user->nombreyapellidos   = request()->post('nombreyapellidos');
+            $user->displayname   = request()->post('displayname');
             $user->email              = request()->post('email');
             $user->phone              = request()->post('phone');
                             
@@ -120,23 +120,23 @@
             
                 $user->addRole('ROLE_USER', $roles );
             
-            $user->foto(request()->post('foto') ?? 'DEFAULT_USERS_IMAGE');
+                $user->picture(request()->post('picture') ?? 'DEFAULT_USERS_IMAGE');
             
             try{
                 $user->save();
                 
                 $file = request()->file(
-                    'foto',
+                    'picture',
                     8000000,
                     ['image/png', 'image/jpeg', 'image/gif']
                  );
                 
                 if ($file) {
-                    $user->foto = $file->store('../public/' .USER_IMAGES_FOLDER, 'user_');
+                    $user->picture = $file->store('../public/' .USERS_IMAGES_FOLDER, 'user_');
                     $user->update();
                 }
                 
-                Session::success("Nuevo usuario $user->nombreyapellidos creado con éxito.");
+                Session::success("Nuevo usuario $user->displayname creado con éxito.");
                 return redirect("/Login");
             
             }catch (ValidationException $e){
@@ -146,7 +146,7 @@
             
             }catch (SQLException $e){
                 
-                Session::error("Se produjo un error al guardar el usuario $user->nombreyapellidos.");
+                Session::error("Se produjo un error al guardar el usuario $user->displayname.");
                 
                 if(DEBUG)
                     throw new Exception($e->getMessage());
@@ -174,7 +174,7 @@
               
               $user= User::findOrFail($id, "No se ha encontrado el usuario.");
               
-              $user->nombreyapellidos      =request()->post('nombreyapellidos');
+              $user->displayname      =request()->post('displayname');
               $user->email                 =request()->post('email');
               $user->phone                 =request()->post('phone');
               
@@ -184,26 +184,26 @@
                   $user->update();
                   
                   $file = request()->file(
-                      'foto',
+                      'picture',
                       8000000,
                       ['image/png', 'image/jpeg', 'image/gif', 'image/webp']
                       );
                   
                   //si hay fichero, lo guardo y actualizamos el campo "portada"
                   if ($file){
-                      if ($user->foto)    //elimina el fichero anterior (si lo hay)
-                          File::remove('../public/'.USER_IMAGE_FOLDER.'/'.$user->foto);
+                      if ($user->picture)    //elimina el fichero anterior (si lo hay)
+                          File::remove('../public/'.USERS_IMAGE_FOLDER.'/'.$user->picture);
                           
-                          $user->foto = $file->store('../public/'.USER_IMAGE_FOLDER, 'USER_');
+                          $user->picture = $file->store('../public/'.USERS_IMAGE_FOLDER, 'USER_');
                           $user->update();
                   }
-                  Session::success("Actualización del usuario $user->nombreyapellidos correcta.");
+                  Session::success("Actualización del usuario $user->displayname correcta.");
                   return redirect("/User/list");
                   
                   //si se produce un error al guardar el libro...
               }catch (SQLException $e){
                   
-                  Session::error("Hubo errores en la actualización del usuario $user->nombreyapellidos.");
+                  Session::error("Hubo errores en la actualización del usuario $user->displayname.");
                   
                   if(DEBUG)
                       throw new SQLException($e->getMessage());
@@ -245,16 +245,16 @@
                   try{
                       $user->deleteObject();
                       
-                      if ($user->foto)
-                          File::remove('../public/'.USER_IMAGE_FOLDER.'/'.$user->foto, true);
+                      if ($user->picture)
+                          File::remove('../public/'.USERS_IMAGE_FOLDER.'/'.$user->picture, true);
                           
                           
-                          Session::success("Se ha borrado de el usuario $user->nombreyapellidos.");
+                          Session::success("Se ha borrado de el usuario $user->displayname.");
                           return view("/User/list");
                           
                   }catch (SQLException $e){
                       
-                      Session::error("No se pudo borrar el usuario $user->nombreyapellidos.");
+                      Session::error("No se pudo borrar el usuario $user->displayname.");
                       
                       if (DEBUG)
                           throw new SQLException($e->getMessage());
@@ -288,12 +288,12 @@
                   $user->addRole($role);
                   $user->update();
                   
-                  Session::success("Se ha añadido '$role' al $user->nombreyapellidos.");
+                  Session::success("Se ha añadido '$role' al $user->displayname.");
                   return redirect("/User/list/");
                   
               }catch(SQLException $e){
                   
-                  Session::error("No se pudo añadir el $user->roles al $user->nombreyapellidos.");
+                  Session::error("No se pudo añadir el $user->roles al $user->displayname.");
                   
                   if(DEBUG)
                       throw new SQLException($e->getMessage());
@@ -332,10 +332,10 @@
               // Guardar cambios en la base de datos
               $user->update();
               
-              Session::success("Se ha eliminado el rol '$role' de {$user->nombreyapellidos}.");
+              Session::success("Se ha eliminado el rol '$role' de {$user->displayname}.");
               return redirect("/User/list/");
           } catch (SQLException $e) {
-              Session::error("No se pudo eliminar el rol '$role' de {$user->nombreyapellidos}.");
+              Session::error("No se pudo eliminar el rol '$role' de {$user->displayname}.");
               
               if (DEBUG) {
                   throw new SQLException($e->getMessage());
@@ -357,14 +357,14 @@
               $id = request()->post('id');
               $user = User::findOrFail($id, "No se ha encontrado el usuario.");
               
-              $tmp = $user->foto;
-              $user->foto = NULL;
+              $tmp = $user->picture;
+              $user->picture = NULL;
               
               try{
                   $user->update();
-                  File::remove('../public/'.USER_IMAGE_FOLDER.'/'.$tmp, true);
+                  File::remove('../public/'.USERS_IMAGE_FOLDER.'/'.$tmp, true);
                   
-                  Session::success("Borrado de la foto del $user->nombreyapellidos realizada.");
+                  Session::success("Borrado de la foto del $user->displayname realizada.");
                   return redirect("/User/edit/$id");
                   
               }catch (SQLException $e){

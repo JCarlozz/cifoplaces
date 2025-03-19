@@ -2,7 +2,7 @@
 <html lang="es">
 	<head>
 		<meta charset="UTF-8">
-		<title>Lista de productos - <?= APP_NAME ?></title>
+		<title>Lista de lugares - <?= APP_NAME ?></title>
 		
 		<!-- META -->
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,10 +18,10 @@
 	</head>
 	<body>
 		<?= $template->login() ?>
-		<?= $template->header('Lista de productos') ?>
+		<?= $template->header('Lista de lugares') ?>
 		<?= $template->menu() ?>
 		<?= $template->breadCrumbs([
-		    'Productos'=> NULL
+		    'Lugares'=> NULL
 		]) ?>
 		<?= $template->messages() ?>
 		
@@ -29,60 +29,49 @@
 		
             <div>
                 <h1><?= APP_NAME ?></h1>
-                <h2>Lista completa de productos</h2>                	 
+                <h2>Lista completa de lugares</h2>                	 
             </div>
         	<div>
-            <?php if ($productos) { ?>
+            <?php if ($places) { ?>
                 <div class="right">
                     <?= $paginator->stats() ?>
                 </div>
         
                 <?php
                 if ($filtro) {
-                    echo $template->removeFilterForm($filtro, '/Producto/list');
+                    echo $template->removeFilterForm($filtro, '/Place/list');
                 } else {
                     echo $template->filterForm(
                         [
-                            'Titulo' => 'titulo',
-                            'Descripción' => 'descripcion',
-                            'Estado' => 'estado',
-                            'Precio' => 'precio'
+                            'Nombre'        => 'name',
+                            'Tipo'          => 'type',
+                            'Localización'  => 'location'
                         ],
                         [
-                            'Titulo' => 'titulo',
-                            'Descripción' => 'descripcion',
-                            'Estado' => 'estado',
-                            'Precio' => 'precio'
+                            'Nombre'        => 'name',
+                            'Tipo'          => 'type',
+                            'Localización'  => 'location'
                         ],
-                        'Titulo',
-                        'Titulo'
+                        'Nombre',
+                        'Nombre'
                     );
                 }?>
                 </div>
                 
                 <!-- Tabla con los resultados -->
                                     
-                    <section>                    
-                    <?php foreach ($productos as $producto) { ?>
-						<div class="centrado three-columns">
-                        	<a href='/Producto/show/<?= $producto->id ?>'>
-                            	<img src="<?= PRO_IMAGE_FOLDER . '/' . ($producto->foto ?? DEFAULT_PRO_IMAGE) ?>"
-                                     class="table-image" alt="Portada de <?= $producto->titulo ?>"
-                                     title="Portada de <?= $producto->titulo ?>"> </a>
-                                <h2><?=$producto->titulo?></h2>
-                                <p><?=$producto->estado?></p>
-                                <p><?=$producto->precio?> €</p>
-                           
-                                                    
-                
-                                <!--<?php if (Login::oneRole(['ROLE_LIBRARIAN'])) { ?>
-                                    <a class='button' href='/Producto/edit/<?= $producto->id ?>' title="Editar">
-                                        <i class="fas fa-edit"></i>
-                                    </a>
-                                    <a class='button' href='/Producto/delete/<?= $producto->id ?>' title="Eliminar">
-                                        <i class="fas fa-trash-alt"></i>
-                                    </a>
-                                <?php } ?>-->
+                    <section class="flex-container-galeria">                    
+                    <?php foreach ($places as $place) { ?>
+						<div class="flex-item">
+                        	<a href='/Place/show/<?= $place->id ?>'>
+                            	<img src="<?= FOTO_IMAGE_FOLDER . '/' . ($place->mainpicture ?? DEFAULT_FOTO_IMAGE) ?>"
+                                     class="centrado medium" alt="Portada de <?= $place->name ?>"
+                                     title="Portada de <?= $place->name ?>"> 
+                             <div class="descrip centrado">
+                                <h2><?=$place->name?></h2>                                                                
+                                <p><?=$place->location?></p>
+                                <p><?=$place->type?></p>
+                            </div></a>
                             
                         </div>
                     <?php } ?>
@@ -91,7 +80,7 @@
                 <?= $paginator->ellipsisLinks() ?>
             <?php } else { ?>
                 <div class="danger p2">
-                    <p>No hay productos que mostrar.</p>
+                    <p>No hay lugares que mostrar.</p>
                 </div>
             <?php } ?>
         
