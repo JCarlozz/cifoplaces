@@ -89,7 +89,8 @@ class Base implements TemplateInterface{
             // prepara el HTML solamente con el botón de "LogIn"
             $html = " 
             <div class='derecha'>
-               <a class='button' href='/Login'>LogIn</a>
+                <a class='button' href='/User/create'>Registro</a>
+                <a class='button' href='/Login'>LogIn</a>               
             </div>";
             
             

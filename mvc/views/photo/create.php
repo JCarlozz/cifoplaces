@@ -36,6 +36,8 @@
     				<form method="post" action="/Photo/store" enctype="multipart/form-data"
     					class="flex2 no-border">
     					
+    					<input type="hidden" name="idplace" value="<?= $idplace ?>">
+    					<input type="hidden" name="idusers" value=<?=user()->id?>>
     					<label>Nombre</label>
     					<input type="text" name="name" value="<?= old('name')?>">
     					<br>

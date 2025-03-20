@@ -56,17 +56,17 @@
             
             $user = User::findOrFail($id, "No se encontró el usuario indicado.");
             
-            $productos = $user->hasMany('producto', 'idusers');
+            $places = $user->hasMany('User', 'idusers');
             
             return view('user/show',[
                 'user'  => $user,
-                'productos' =>$productos
+                'places' =>$places
             ]);
         }
         
        public function edit(int $id=0){
             
-            Login::oneRole(["ROLE_USER", "ROLE-ADMIN"]);
+            //Login::oneRole(["ROLE_USER", "ROLE-ADMIN"]);
             
             //busca del usuario con ese ID
             $user = User::findOrFail($id, "No se encontró el usuario.");
@@ -88,80 +88,75 @@
         
         public function create(){
             
-            Login::isAdmin();
+            //Login::isAdmin();
             
             return view('user/create');
         }
         
         public function store(){
             
-            //Auth::admin();
+            //Auth::check();
             
             if(!request()->has('guardar'))
                 throw new FormException('No se recibió el formulario');
-            
-            $user = new User();
-            
-            $user->password =md5($_POST['password']);
-            $repeat         =md5($_POST['repeatpassword']);
-            
-            if ($user->password != $repeat)
-                throw new ValidationException("Las claves no coinciden.");
-            
-            $user->displayname   = request()->post('displayname');
-            $user->email              = request()->post('email');
-            $user->phone              = request()->post('phone');
-                            
-            $roles=[];
-            
-            if(Login::isAdmin()){
-                $roles = $this->request->post('roles');
-            }
-            
-                $user->addRole('ROLE_USER', $roles );
-            
-                $user->picture(request()->post('picture') ?? 'DEFAULT_USERS_IMAGE');
-            
-            try{
-                $user->save();
                 
-                $file = request()->file(
-                    'picture',
-                    8000000,
-                    ['image/png', 'image/jpeg', 'image/gif']
-                 );
+                $user = new User();
                 
-                if ($file) {
-                    $user->picture = $file->store('../public/' .USERS_IMAGES_FOLDER, 'user_');
-                    $user->update();
-                }
+                $user->password =md5($_POST['password']);
+                $repeat         =md5($_POST['repeatpassword']);
                 
-                Session::success("Nuevo usuario $user->displayname creado con éxito.");
-                return redirect("/Login");
-            
-            }catch (ValidationException $e){
-                
-                Session::error($e->getMessage());
-                return redirect("/User/create");
-            
-            }catch (SQLException $e){
-                
-                Session::error("Se produjo un error al guardar el usuario $user->displayname.");
-                
-                if(DEBUG)
-                    throw new Exception($e->getMessage());
-                return redirect("/User/create");
-            
-            }catch (UploadException $e){
-                Session::warning("El usuario se guardó correctamente, pero no se pudo subir el fichero de imagen.");
-                
-                if (DEBUG)
-                    throw new Exception($e->getMessage());
-                
-                    return redirect("User/edit/$user->id");
+                if ($user->password != $repeat)
+                    throw new ValidationException("Las claves no coinciden.");
                     
-            }
-      }
+                    $user->displayname   = request()->post('displayname');
+                    $user->email         = request()->post('email');
+                    $user->phone         = request()->post('phone');
+                    
+                    
+                    $user->addRole('ROLE_USER', $this->request->post('roles'));
+                    
+                    //$user->picture(request()->post('picture') ?? 'DEFAULT_USERS_IMAGE');
+                    
+                    try{
+                        $user->save();
+                        
+                        $file = request()->file(
+                            'picture',
+                            8000000,
+                            ['image/png', 'image/jpeg', 'image/gif']
+                            );
+                        
+                        if ($file) {
+                            $user->picture = $file->store('../public/' .USERS_IMAGES_FOLDER, 'USER_');
+                            $user->update();
+                        }
+                        
+                        Session::success("Nuevo usuario $user->displayname creado con éxito.");
+                        return redirect("/User/home/$user->id");
+                        
+                    }catch (ValidationException $e){
+                        
+                        Session::error($e->getMessage());
+                        return redirect("/User/create");
+                        
+                    }catch (SQLException $e){
+                        
+                        Session::error("Se produjo un error al guardar el usuario $user->displayname.");
+                        
+                        if(DEBUG)
+                            throw new Exception($e->getMessage());
+                            return redirect("/User/create");
+                            
+                    }catch (UploadException $e){
+                        Session::warning("El usuario se guardó correctamente, pero no se pudo subir el fichero de imagen.");
+                        
+                        if (DEBUG)
+                            throw new Exception($e->getMessage());
+                            
+                            return redirect("User/edit/$user->id");
+                            
+                    }
+        }
       
       public function update(){
           
@@ -192,9 +187,9 @@
                   //si hay fichero, lo guardo y actualizamos el campo "portada"
                   if ($file){
                       if ($user->picture)    //elimina el fichero anterior (si lo hay)
-                          File::remove('../public/'.USERS_IMAGE_FOLDER.'/'.$user->picture);
+                          File::remove('../public/'.USER_IMAGE_FOLDER.'/'.$user->picture);
                           
-                          $user->picture = $file->store('../public/'.USERS_IMAGE_FOLDER, 'USER_');
+                          $user->picture = $file->store('../public/'.USER_IMAGE_FOLDER, 'USER_');
                           $user->update();
                   }
                   Session::success("Actualización del usuario $user->displayname correcta.");
@@ -246,7 +241,7 @@
                       $user->deleteObject();
                       
                       if ($user->picture)
-                          File::remove('../public/'.USERS_IMAGE_FOLDER.'/'.$user->picture, true);
+                          File::remove('../public/'.USER_IMAGE_FOLDER.'/'.$user->picture, true);
                           
                           
                           Session::success("Se ha borrado de el usuario $user->displayname.");
@@ -341,7 +336,7 @@
                   throw new SQLException($e->getMessage());
               }
               
-              return redirect("/User/edit/$userId");
+              return redirect("/User/edit/$user->id");
           }
       }
       
@@ -362,7 +357,7 @@
               
               try{
                   $user->update();
-                  File::remove('../public/'.USERS_IMAGE_FOLDER.'/'.$tmp, true);
+                  File::remove('../public/'.USER_IMAGE_FOLDER.'/'.$tmp, true);
                   
                   Session::success("Borrado de la foto del $user->displayname realizada.");
                   return redirect("/User/edit/$id");

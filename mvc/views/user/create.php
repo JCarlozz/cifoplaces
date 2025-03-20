@@ -37,7 +37,7 @@
     					class="flex2 no-border">
     					
     					<label>Nombre</label>
-    					<input type="text" name="nombreyapellidos" value="<?= old('nombreyapellidos')?>">
+    					<input type="text" name="displayname" value="<?= old('displayname')?>">
     					<br>
     					<label>Email</label>
     					<input type="email" name="email" id="email" value="<?= old('email')?>">
@@ -46,16 +46,7 @@
     					<label>Teléfono</label>
     					<input type="text" name="phone" id="phone" value="<?= old('phone')?>">
     					<output id="comprobacionphone" class="mini"></output>
-    					<br>
-    					<label>Ciudad</label>
-    					<input type="text" name="poblacion" value="<?= old('poblacion')?>">
-    					<br>
-    					<label>Provincia</label>
-    					<input type="text" name="provincia" value="<?= old('"provincia"')?>">
-    					<br>
-    					<label>Dirección</label>
-    					<input type="text" name="direccion" value="<?= old('"direccion"')?>">
-    					<br>
+    					<br>    					
     					<label>Password</label>
     					<input type="password" name="password" value="<?= old('password')?>">
     					<br>
@@ -65,7 +56,7 @@
     					<label>Imagen de perfil</label>
     					<input type="file" name="picture" accept="image/*" id="file-with-preview">
     					<br>
-    					<?php if(Login::isAdmin()){?>
+    					
     					<label>Rol</label>
     					
     					<select name="roles">
@@ -73,7 +64,7 @@
     							<option value="<?=$roleValue ?>"><?=$roleName?></option>
     						<?php } ?>
     					</select>
-    					<?php } ?>
+    					
     						<div class="centered mt3">
     							<input type="submit" class="button" name="guardar" value="Guardar">
     							<input type="reset" class="button" value="Reset">
@@ -82,7 +73,7 @@
     				</div>   
     		<div class="flex-container">					
     			<figure class="flex1 centrado">
-    				<img src="<?=USER_IMAGE_FOLDER.'/'.($user->foto ?? DEFAULT_USER_IMAGE)?>"
+    				<img src="<?=USER_IMAGE_FOLDER.'/'.($user->picture ?? DEFAULT_USER_IMAGE)?>"
     				class="cover" id="preview-image" alt="Previsualización de la imagen de perfil">
     				<figcaption>Previsualización de la imagen de perfil</figcaption>    						
     			</figure>

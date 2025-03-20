@@ -50,9 +50,12 @@ class PlaceController extends Controller{
         
         $comments = $place->hasMany('V_comment');
         
+        $photos = $place->hasMany('Photo', 'idplace', 'id');
+        
         return view('place/show',[
             'place'         => $place,
-            'comments'      => $comments
+            'comments'      => $comments,
+            'photos'        => $photos
         ]);
     }
     
@@ -83,7 +86,7 @@ class PlaceController extends Controller{
             $place->type            =request()->post('type');
             $place->location        =request()->post('location');
             $place->description     =request()->post('description');
-            $place->mainpicture     =request()->post('mainpicture');
+            
             $place->latitude        =request()->post('latitude');
             $place->longitude       =request()->post('longitude');
             
@@ -95,8 +98,8 @@ class PlaceController extends Controller{
                 
                 if ($errores = $place->validate())
                     throw new ValidationException(
-                        "<br>".arrayToString($errores, false, false, ".<br>")
-                        );
+                        "<br>".arrayToString($errores, false, false, ".<br>"));
+                        
                     
                     //guarda el libro en la base de datos
                     $place->save();
@@ -264,7 +267,7 @@ class PlaceController extends Controller{
                     
                     
                     Session::success("Se ha borrado el lugar $place->name.");
-                    return view("/Place/list");
+                    return view("/Place/show/$place->id");
                     
             }catch (SQLException $e){
                 

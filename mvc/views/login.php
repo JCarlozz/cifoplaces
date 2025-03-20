@@ -44,10 +44,11 @@
     			<div class="centered m2">
     				<input type="submit" class="button" name="login" value="LogIn">
     			</div>
-    			<div class="right">
-    				<a href="/Forgotpassword">Olvidé mi clave</a>
-    			</div>
+    			<div class="centered">
+    				<a class='button' href='/User/create'>Registro</a>
+    				<a href="/Forgotpassword">Olvidé mi clave</a>	
     			
+    			</div>
     		</form>
 
     		

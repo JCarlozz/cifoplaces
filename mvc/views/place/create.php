@@ -2,7 +2,7 @@
 <html lang="es">
 	<head>
 		<meta charset="UTF-8">
-		<title>Crear un nuevo producto - <?= APP_NAME ?></title>
+		<title>Crear un nuevo lugar - <?= APP_NAME ?></title>
 		
 		<!-- META -->
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,44 +18,44 @@
 	</head>
 	<body>
 		<?= $template->login() ?>
-		<?= $template->header('Crear un nuevo producto') ?>
+		<?= $template->header('Crear un nuevo lugar') ?>
 		<?= $template->menu() ?>
 		<?= $template->breadCrumbs([
-		    'Productos'=> '/producto',
-		    'Nuevo producto'=> NULL
+		    'place'=> '/place/list',
+		    'Nuevo lugar'=> NULL
 		]) ?>
 		<?= $template->messages() ?>
 		
 		<main>
     		<h1><?= APP_NAME ?></h1>
-    		<h2>Nuevo Producto</h2>
+    		<h2>Nuevo Lugar</h2>
 			
-			<form method="POST" class="flex-container gap2" enctype="multipart/form-data" action="/Producto/store">
+			<form method="POST" class="flex-container gap2" enctype="multipart/form-data" action="/Place/store">
 				
 				<div class="flex2">
 				
 					<input type="hidden" name="idusers" value=<?=user()->id?>>
 					<label>Título</label>
-					<input type="text" name="titulo" value="<?=old('titulo')?>">
+					<input type="text" name="name" value="<?=old('name')?>">
 					<br>
-					<label>Precio</label>
-					<input type="number" name="precio" value="<?=old('precio')?>">
+					<label>Tipo</label>
+					<input type="text" name="type" value="<?=old('type')?>">
 					<br>					
 					<label>Imagen</label>
-					<input type="file" name="foto" accept="image/*" id="file-with-preview">
+					<input type="file" name="mainpicture" accept="image/*" id="file-with-preview">
+					<br>					
+					<label>Localización</label>
+					<input type="text" name="location" class="w50" value="<?=old('location')?>">
 					<br>
-					<label>Estado</label>
-					<select name="estado">
-						<option value="Como nuevo" <?=oldSelected('estado','Como nuevo')?>>
-							Como nuevo</option>
-						<option value="Nuevo" <?=oldSelected('estado','Nuevo')?>>
-							Nuevo</option>
-						<option value="Usado" <?=oldSelected('estado','Usado')?>>
-							Usado</option>
-					</select>
-					<br>							
+					<label>Latitud</label>
+					<input type="number" name="latitude" class="w50" value="<?=old('latitude')?>">
+					<br>
+					<label>Longitud</label>
+					<input type="number" name="longitude" class="w50" value="<?=old('longitude')?>">
+					<br>
+					
 					<label>Descripción</label>
-					<textarea name="descripcion" class="w50"><?=old('descripcion')?></textarea>
+					<textarea name="description" placeholder="Escribe aquí" class="w50"><?=old('text')?></textarea>
 					<br>
 					<div class="centrado my2">
 						<input type="submit" class="button" name="guardar" value="Guardar">
@@ -63,7 +63,7 @@
 					</div>    
 				</div>
 				<figure class="flex1 centrado p2">
-    				<img src="<?=PRO_IMAGE_FOLDER.'/'.($producto->titulo ?? DEFAULT_PRO_IMAGE)?>"
+    				<img src="<?=FOTO_IMAGE_FOLDER.'/'.($place->name ?? DEFAULT_FOTO_IMAGE)?>"
     					class="cover" id="preview-image" alt="Previsualización de la portada">
     				<figcaption>Previsualización de la portada</figcaption>
     			</figure>		

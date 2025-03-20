@@ -20,7 +20,7 @@
 		<?= $template->header('Foto') ?>
 		<?= $template->menu() ?>
 		<?= $template->breadCrumbs([
-		    'Foto'=> '/photo',
+		    'Lugar'=> '/Place/show/$id',
 		    $photo->name =>NULL
 		]) ?>
 		<?= $template->messages() ?>
@@ -28,18 +28,14 @@
 		<main>
 		
 		
-    		<h1><?= APP_NAME ?></h1>
-    		
-    		<a class="button" href="/Photo/edit/<?= $photo->id?>">Editar</a>
+    		<h1><?= APP_NAME ?></h1>    		
     		
     		<section id="detalles" class="flex-container gap2">
     			<div class="flex2">
-    			<h2><?=$photo->name?></h2>
+    			<h2><?=$photo->name?></h2>  			
     			
     			
-    			
-    			<p><b>Nombre:</b>		<?=$photo->name?></p>
-    			
+    			<p><b>Nombre:</b>		<?=$photo->name?></p>    			
     			<p><b>Lugar:</b>		<?=$photo->alt?></p>
     			<p><b>Descripción:</b>	<?=$photo->description?></p>
     			<p><b>Data:</b>			<?=$photo->date?></p>
@@ -54,20 +50,52 @@
         			<?php if($photo->file) {?>
         			<form method="POST" action="/Photo/dropcover" class="no-border">
         				<input type="hidden" name="id" value="<?=$photo->id?>">
+        				<input type="hidden" name="id" value="<?=$photo->id?>">
         				<input type="submit" class="button-danger" name="borrar" value="Eliminar foto">
         			</form>
         			<?php } ?>	
         		</figure>    			
-    		</section>	   		
+    		</section>	
+    		<section>
+                <h2>Comentarios:</h2>
+            
+                <?php if (!empty($comments)) { ?>
+                    <div class="comments-container">
+                        <?php foreach ($comments as $comment) { ?>
+                            <div class="comment">
+                                <figure class="comment-avatar">
+                                    <img src="<?= USER_IMAGE_FOLDER . '/' . ($user->picture ?? DEFAULT_USER_IMAGE) ?>" alt="Imagen de <?= $user->displayname ?>">
+                                </figure>
+                                <div class="comment-content">
+                                    <p class="comment-author"><?= $user->displayname ?></p>
+                                    <p class="comment-text"><?= $comment->text ?></p>
+                                </div>
+                                <div class="comment-actions">
+                                    <form method="POST" action="/Comment/destroy">
+                                    	<input type="hidden" name="iduser" value="<?= user()->id ?>">
+                                        <input type="hidden" name="id" value="<?= $comment->id ?>">
+                                        <button type="submit" class="button small" name="borrar" >Eliminar</button>
+                                    </form>
+                                </div>
+                            </div>
+                        <?php } ?>
+                    </div>
+                <?php } else { ?>
+                    <p class="no-comments">No hay comentarios aún. ¡Sé el primero en comentar!</p>
+                <?php } ?>
+            
+                <form method="POST" action="/Comment/storephoto" class="comment-form">
+                    <textarea name="text" placeholder="Escribe aquí tu comentario"></textarea>
+                    <input type="hidden" name="iduser" value="<?= user()->id ?>">
+                    <input type="hidden" name="idphoto" value="<?= $photo->id ?>">
+                    <button type="submit" class="button" name="guardar">Añadir comentario</button>
+                </form>
+            </section>   		
     		
     		    		
     		<div class="centrado">
     			<a class="button" onclick="history.back()">Atrás</a>
-    			<a class="button" href="/Producto/list/">Lista de productos</a>
-    			<?php  if(Login::user()->id ==  $user->id ){?>
-    			<a class="button" href="/User/edit/<?= $user->id?>">Editar</a>
-    			<a class="button" href="/User/delete/<?= $user->id?>">Darme de baja</a>
-    			<?php } ?>    		
+    			    		
     		</div>
 		</main>
 		<?= $template->footer() ?>

@@ -20,7 +20,7 @@
 		<?= $template->header('Lista de lugares') ?>
 		<?= $template->menu() ?>
 		<?= $template->breadCrumbs([
-		    'Lugares'=>'/lugares',
+		    'Lugares'=>'/Place/list/',
 		    $place->name=>NULL 
 		]) ?>
 		<?= $template->messages() ?>
@@ -52,48 +52,63 @@
     					class="large enlarge-image"
     					alt="Portada del lugar: <?=$place->name?>">
     				<figcaption>Portada de <?="$place->name"?></figcaption>
-    			</figure>   			
+    			</figure>    			  			
     		</section>
     		
-    		<section>
-    			 <h2>Comentarios:</h2>
-    			 <?php foreach ($comments as $comment){?>
-                    <div class="small">
-                        <div class="flex6 centrado p2">                        	
-                        	<img src="<?=USER_IMAGE_FOLDER.'/'.($comment->userpicture ?? DEFAULT_USER_IMAGE)?>" class="small derecha">    						
-    					</div>
-    					<div>                        
-                        <tr> 
-                        	 
-                        	<p><?= $comment->username ?></p>
-                        	<p><?= $comment->userpicture ?></p>
-                            <p><?= $comment->text ?><p>
-                        </tr>
-                        </div>                           
-                            <div class="centrado my3">
-                            	<form method="POST" action="/Comment/destroy">
-                            	<input type="hidden" name="id" value="<?=$comment->id?>">    				
-    							<input type="submit" class="button small" name="borrar" value="Eliminar comentario">
-    							</form>		
-    						</div>                                                      
-                        
-                    </div>
-                <?php }?> 
-                	
-                	<form method="POST" action="/Comment/store">    			
-            			<textarea name="comment" placeholder="Escribe aquí tu comentario"></textarea>    						
-            			<input type="hidden" name="idplace" value="<?=$place->id?>">
-            						
-            			<div class="centrado my3">    				
-            				<input type="submit" class="button" name="guardar" value="Añadir comentario">
-            				
-            			</div>
-    				</form> 
-            </section>
+    		<?php if (!empty($photos)) { ?>
             <section>
-    			
-    					
-    		</section>    		
+                <h2>Otras fotos:</h2>
+                <div class="galeria-lugares">
+                    <?php foreach ($photos as $photo) { ?>
+                        <?php if (!empty($photo->file)) { ?>
+                            <figure class="galeria-lugares">
+                                <a href="/Photo/show/<?= $photo->id ?>">
+                                    <img src="<?= FOTO_IMAGE_FOLDER . '/' . $photo->file ?>" class="large enlarge-image">
+                                </a>                 
+                            </figure>
+                        <?php } ?>
+                    <?php } ?>
+                </div>
+            </section>
+        	<?php } ?>
+        	
+        	<section>
+                <h2>Comentarios:</h2>
+            
+                <?php if (!empty($comments)) { ?>
+                    <div class="comments-container">
+                        <?php foreach ($comments as $comment) { ?>
+                            <div class="comment">
+                                <figure class="comment-avatar">
+                                    <img src="<?= USER_IMAGE_FOLDER . '/' . ($comment->userpicture ?? DEFAULT_USER_IMAGE) ?>" alt="Imagen de <?= $user->displayname ?>">
+                                </figure>
+                                <div class="comment-content">
+                                    <p class="comment-author"><?= user()->displayname ?></p>
+                                    <p class="comment-text"><?= $comment->text ?></p>
+                                    <p class="comment-text"><?= $comment->created_at ?></p>
+                                    
+                                </div>
+                                <div class="comment-actions">
+                                    <form method="POST" action="/Comment/destroyplace">
+                                    	<input type="hidden" name="iduser" value="<?= user()->id ?>">
+                                        <input type="hidden" name="id" value="<?= $comment->id ?>">
+                                        <button type="submit" class="button small" name="borrar">Eliminar</button>
+                                    </form>
+                                </div>
+                            </div>
+                        <?php } ?>
+                    </div>
+                <?php } else { ?>
+                    <p class="no-comments">No hay comentarios aún. ¡Sé el primero en comentar!</p>
+                <?php } ?>
+            
+                <form method="POST" action="/Comment/store" class="comment-form">
+                    <textarea name="text" placeholder="Escribe aquí tu comentario"></textarea>
+                    <input type="hidden" name="iduser" value="<?= user()->id ?>">
+                    <input type="hidden" name="idplace" value="<?= $place->id ?>">
+                    <button type="submit" class="button" name="guardar">Añadir comentario</button>
+                </form>
+            </section>                       
     		
     		<div class="centrado">
     			<a class="button" onclick="history.back()">Atrás</a>    			 		

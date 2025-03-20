@@ -8,11 +8,14 @@ class PhotoController extends Controller{
         
         $photo = Photo::findOrFail($id, "No se encontró la foto indicada.");
         
-        $comments = $photo->hasMany('comment', 'idphoto');
+        $comments = $photo->hasMany('Comment', 'idphoto');
+        
+        $user= $photo->belongsTo('User');
         
         return view('photo/show',[
-            'photo'  => $photo,
-            'comment' =>$comments
+            'photo'     => $photo,
+            'comments'  => $comments,
+            'user'      => $user
         ]);
     }
     
@@ -30,16 +33,13 @@ class PhotoController extends Controller{
     }
     
        
-    public function create(int $id= 0){
+    public function create(int $idplace = 0){
         
         //Login::isAdmin();
-        
-        $photo = V_picture::all();
-        
-        
+        var_dump($idplace);
         
         return view('photo/create',[
-            'photo' => $photo
+            'idplace' => $idplace 
         ]);
     }
     
@@ -162,7 +162,7 @@ class PhotoController extends Controller{
             
             try{
                 $user->update();
-                File::remove('../public/'.USERS_IMAGE_FOLDER.'/'.$tmp, true);
+                File::remove('../public/'.USER_IMAGE_FOLDER.'/'.$tmp, true);
                 
                 Session::success("Borrado de la foto del $user->displayname realizada.");
                 return redirect("/User/edit/$id");

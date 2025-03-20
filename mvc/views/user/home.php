@@ -26,29 +26,93 @@
 		<?= $template->messages() ?>
 		
 		<main>
-		  	<h1><?= APP_NAME ?></h1>
-    		<h2>Home usuario</h2>    		
+		
+		
+    		<h1><?= APP_NAME ?></h1>
     		
-    		<section class="flex-container" id="user-data">
+    		<a class="button" href="/User/edit/<?= $user->id?>">Editar</a>
+    		<a class="button" href="/User/delete/<?= $user->id?>">Darme de baja</a>
+    		
+    		<section id="detalles" class="flex-container gap2">
     			<div class="flex2">
-    				<h2><?="Home de $user->displayname"?></h2>
-    				
-    				<p><b>Nombre:</b>				<?=$user->nombreyapellido?><p>
-    				<p><b>Email:</b>				<?=$user->email?><p>
-    				<p><b>Teléfono:</b>				<?=$user->phone?><p>
-    				<p><b>Fecha de alta:</b>		<?=$user->created_at?><p>
-    				<p><b>Última modificación:</b>	<?=$user->updated_at ?? '--'?><p>
-    				
+    			<h2><?=$user->displayname?></h2>
+    			
+    			
+    			
+    			<p><b>Nombre:</b>				<?=$user->displayname?></p>
+    			
+    			<p><b>Email:</b>				<?=$user->email?></p>
+    			<p><b>Teléfono:</b>				<?=$user->phone?></p>
+    			<p><b>Fecha de alta:</b>		<?=$user->created_at?><p>
+    			<p><b>Última modificación:</b>	<?=$user->updated_at ?? '--'?><p>    			
+    			
+    			<p><b>Roles:</b> 				<?= implode(', ', $user->roles) ?></p>  			
+    			
     			</div>
-    			<!-- Esta parte solamente si creáis la carpeta para las fotos de perfil-->
-    			<figure class="flex1 centrado">
-    				<img src="<?=USER_IMAGE_FOLDER.'/'.($user->picture ?? DEFAULT_USER_IMAGE)?>"
-    					class="cover enlarge-image" alt="Imagen de perfil de <?= $user->nombreyapellido ?>">
-    				<figcaption>Imagen de perfil de <?=$user->nombreyapellido?></figcaption>    						
-    			</figure>    		
+    			<figure class="flex1 centrado p2">
+        			<img src="<?=USERS_IMAGE_FOLDER.'/'.($user->picture ?? DEFAULT_USERS_IMAGE)?>"
+        				class="cover enlarge-image" alt="Foto del usuario <?=$user->displayname?>">    					
+        			<figcaption>Foto del usuario <?="$user->displayname"?></figcaption>
+        			<?php if($user->picture) {?>
+        			<form method="POST" action="/User/dropcover" class="no-border">
+        				<input type="hidden" name="id" value="<?=$user->id?>">
+        				<input type="submit" class="button-danger" name="borrar" value="Eliminar foto">
+        			</form>
+        			<?php } ?>	
+        		</figure>    			
     		</section>
     		
-		  
+    		<section>
+    									
+    			 <h2>Productos de <?= $user->displayname?></h2>
+    							
+    				<a class="button" href="/Producto/create/<?=$producto->idusers?>">
+    					Nuevo producto
+    				</a>
+    				
+    				<?php 
+    			 	if (!$productos){
+    				    echo "<div class='warning p2'><p>No tienes productos a la venta.</p></div>";
+    				}else{ ?>    				
+        				<table class="table w100 centered-block">
+        					<tr>    					
+        						<th>Imagen</th><th>Título</th><th>Precio</th><th>Estado</th><?php  if(lOGIN::user()->id ==  $user->id ){?><th>Operaciones</th><?php }?>
+        					</tr>        					
+        				<?php foreach($productos as $producto){ ?>			     			     	
+            				<tr>
+            					<td>
+            						<figure>
+    									<img src="<?=PRO_IMAGE_FOLDER.'/'.($producto->foto ?? DEFAULT_PRO_IMAGE)?>"
+    									class="small" id="preview-image" alt="Previsualización de la imagen">    				
+    								</figure>
+    							</td>
+            					<td><a href='/Producto/show/<?= $producto->id ?>'><?=$producto->titulo?></td>
+            					<td><?=$producto->precio?></td>
+            					<td><?=$producto->estado?></td>
+            					<?php  if(Login::user()->id ==  $user->id ){?>
+            					<td class="centered">  
+            							<a class="button" href="/Producto/edit/<?= $producto->id?>">Editar</a> 
+            							                                 
+                                        <a class="button" href="/Producto/delete/<?= $producto->id ?>">Borrar</a>           
+                                   
+                                </td>
+                                <?php } ?>                                
+            				</tr>            			
+            			<?php } ?>
+            			<?php } ?>
+            			</table>
+            		
+            	</section>
+    		
+    		    		
+    		<div class="centrado">
+    			<a class="button" onclick="history.back()">Atrás</a>
+    			<a class="button" href="/Producto/list/">Lista de productos</a>
+    			<?php  if(Login::user()->id ==  $user->id ){?>
+    			<a class="button" href="/User/edit/<?= $user->id?>">Editar</a>
+    			<a class="button" href="/User/delete/<?= $user->id?>">Darme de baja</a>
+    			<?php } ?>    		
+    		</div>
 		</main>
 		<?= $template->footer() ?>
 		<?= $template->version() ?>		
