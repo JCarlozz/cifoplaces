@@ -31,6 +31,7 @@
     			<div class="flex2">
         			<h2><?= $place->name?></h2>
         			<td><?= $place->titulo ?></td>
+        			
                                     			        			
         			<p><b>Título:</b>			<?=$place->name?></p>        			
         			<p><b>Tipo:</b>				<?=$place->type?></p>
@@ -41,45 +42,57 @@
         			<p><b>Descripción:</b>		<?=$place->description ? paragraph($place->description) : 'SIN DETALLES'?></p>
         			
         			    				   			
-    				<a class="button" href="/Photo/create/<?=$place->iduser?>">
+    				<a class="button" href="/Photo/create/<?=$place->id?>">
     					Añadir foto
     				</a>        			
         			   		
     			</div>
-    			<figure class="flex2º centrado p2">
+    			<figure class="flex2 centrado p2">
     				<img src="<?=FOTO_IMAGE_FOLDER.'/'.($place->mainpicture ?? DEFAULT_FOTO_IMAGE)?>"
     					class="large enlarge-image"
-    					alt="Portada del producto: <?=$place->name?>">
+    					alt="Portada del lugar: <?=$place->name?>">
     				<figcaption>Portada de <?="$place->name"?></figcaption>
     			</figure>   			
     		</section>
     		
     		<section>
     			 <h2>Comentarios:</h2>
-    			 <?php foreach ($place as $p){?>
-                    <tr> 
-                        <h2><?= $p->text ?><h2>
-                        <p><?= $p->username ?></p>
-                        <td class="centrado">
-                            <a href='/Comment/destroy/<?= $p->id ?>' title="Borrar">
-                                <i class="fas fa-trash-alt"></i>
-                            </a>
-                        </td>
-                    </tr>
+    			 <?php foreach ($comments as $comment){?>
+                    <div class="small">
+                        <div class="flex6 centrado p2">                        	
+                        	<img src="<?=USER_IMAGE_FOLDER.'/'.($comment->userpicture ?? DEFAULT_USER_IMAGE)?>" class="small derecha">    						
+    					</div>
+    					<div>                        
+                        <tr> 
+                        	 
+                        	<p><?= $comment->username ?></p>
+                        	<p><?= $comment->userpicture ?></p>
+                            <p><?= $comment->text ?><p>
+                        </tr>
+                        </div>                           
+                            <div class="centrado my3">
+                            	<form method="POST" action="/Comment/destroy">
+                            	<input type="hidden" name="id" value="<?=$comment->id?>">    				
+    							<input type="submit" class="button small" name="borrar" value="Eliminar comentario">
+    							</form>		
+    						</div>                                                      
+                        
+                    </div>
                 <?php }?> 
+                	
+                	<form method="POST" action="/Comment/store">    			
+            			<textarea name="comment" placeholder="Escribe aquí tu comentario"></textarea>    						
+            			<input type="hidden" name="idplace" value="<?=$place->id?>">
+            						
+            			<div class="centrado my3">    				
+            				<input type="submit" class="button" name="guardar" value="Añadir comentario">
+            				
+            			</div>
+    				</form> 
+            </section>
+            <section>
     			
-    			<form method="POST" action="/Comment/store">
-    			
-    			<textarea name="comment" rows="4" cols="50" placeholder="Escribe aquí tu comentario"></textarea>
-    						
-    			<input type="hidden" name="idplace" value="<?=$place->id?>">
-    			<input type="hidden" name="iduser" value="<?=$place->iduser?>">
-    						
-    			<div class="centrado my2">    				
-    				<input type="submit" class="button" name="guardar" value="Añadir comentario">
-    				
-    			</div>
-    			</form> 		
+    					
     		</section>    		
     		
     		<div class="centrado">

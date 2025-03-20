@@ -15,44 +15,7 @@
 		<script src="/js/Preview.js"></script>
 		<!-- CSS -->
 		<?= $template->css() ?>
-		<script>
-			window.addEventListener('load', function(){	
-				email.addEventListener('change', function(){
-					fetch("/User/checkemail/"+this.value,{
-						"method":"GET"
-					})
-					.then(function(respuesta){
-            			return respuesta.json();
-            		})
-            		.then(function(json){
-            			if(json.status == 'OK')
-            				comprobacion.innerHTML =
-            					json.data.found ? 'Este email ya está registrado' :'';
-						else
-							comprobacion.innerHTML = 'No se pudo comprobar.';
-    					});
-    				});
-    			});		
-    		</script>
-    		<script>
-    			window.addEventListener('load', function(){	
-    				phone.addEventListener('change', function(){
-    					fetch("/User/checkphone/"+this.value,{
-    						"method":"GET"
-    					})
-    					.then(function(respuesta){
-                			return respuesta.json();
-                		})
-                		.then(function(json){
-                			if(json.status == 'OK')
-                				comprobacionphone.innerHTML =
-                					json.data.found ? 'Este número de teléfono ya está registrado' :'';
-    						else
-    							comprobacionphone.innerHTML = 'No se pudo comprobar.';
-        					});
-        				});
-        			});		
-        		</script>
+		
 	</head>
 	<body>
 		<?= $template->login() ?>

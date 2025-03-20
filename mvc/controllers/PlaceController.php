@@ -46,14 +46,13 @@ class PlaceController extends Controller{
     
     public function show(int $id=0){
         
-        $place = V_comment::findOrFail($id, "No se encontró el lugar indicado.");
+        $place = Place::findOrFail($id, "No se encontró el lugar indicado.");
         
-        //$comments = $place->hasAny('comment', 'idplace');
-        
+        $comments = $place->hasMany('V_comment');
         
         return view('place/show',[
-            'place'         => $place
-            //'comment'       =>$comments
+            'place'         => $place,
+            'comments'      => $comments
         ]);
     }
     
