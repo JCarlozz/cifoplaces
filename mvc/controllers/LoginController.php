@@ -90,7 +90,7 @@ class LoginController extends Controller{
         Session::forget('_pending_operation');
         
         // redirecciona a la operación pendiente o bien donde indique el config.php o bien a portada
-        return redirect($pending ?? REDIRECT_AFTER_LOGIN ?? '/');
+        return redirect('/User/show/'.user()->id ?? REDIRECT_AFTER_LOGIN ?? '/');
     }
 }
 

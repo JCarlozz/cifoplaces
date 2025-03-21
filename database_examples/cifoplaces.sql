@@ -26,7 +26,8 @@ CREATE TABLE users(
 INSERT INTO users(id, displayname, email, phone, password, roles) VALUES 
 	(1, 'admin', 'admin@fastlight.org', '666666661', md5('1234'), '["ROLE_USER", "ROLE_ADMIN"]'),
 	(2, 'test', 'test@fastlight.org', '666666663', md5('1234'), '["ROLE_USER", "ROLE_TEST"]'),
-	(3, 'user', 'user@fastlight.org', '666666666', md5('1234'), '["ROLE_USER"]');
+	(3, 'user', 'user@fastlight.org', '666666666', md5('1234'), '["ROLE_USER"]'),
+	(4, 'moderator', 'moderator@fastlight.org', '666666667', md5('1234'), '["ROLE_USER", "ROLE_MODERATOR"]');
 
 -- tabla errors
 -- por si queremos registrar los errores en base de datos.

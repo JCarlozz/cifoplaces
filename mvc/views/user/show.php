@@ -29,9 +29,10 @@
 		
 		
     		<h1><?= APP_NAME ?></h1>
-    		<?php  if(Login::user()->id ==  $user->id || Login::isAdmin() ){?>
+    		
     		<a class="button" href="/User/edit/<?= $user->id?>">Editar</a>
-    		<?php }?>
+    		<a class="button" href="/User/delete/<?= $user->id?>">Darme de baja</a>
+    		
     		<section id="detalles" class="flex-container gap2">
     			<div class="flex2">
     			<h2><?=$user->displayname?></h2>
@@ -39,75 +40,71 @@
     			
     			
     			<p><b>Nombre:</b>		<?=$user->displayname?></p>
-    			<?php if(Login::check()) { ?>
-    			<p><b>Email:</b>		<?=$user->email?></p>
-    			<p><b>Teléfono:</b>		<?=$user->phone?></p>
-    			<p><b>Ciudad:</b>		<?=$user->poblacion?></p>
-    			<p><b>Provincia:</b>	<?=$user->provincia?>
-    			<p><b>Dirección:</b>	<?=$user->direccion?></p>
-    			<?php } ?>
     			
-    			<?php  if(Login::isAdmin()){?>
+    			<p><b>Email:</b>		<?=$user->email?></p>
+    			<p><b>Teléfono:</b>		<?=$user->phone?></p>    			
+    			
+    			
     			<p><b>Roles:</b> 		<?= implode(', ', $user->roles) ?></p>
-    			<?php } ?>
+    			
     			
     			</div>
     			<figure class="flex1 centrado p2">
-        			<img src="<?=USERS_IMAGE_FOLDER.'/'.($user->foto ?? DEFAULT_USERS_IMAGE)?>"
+        			<img src="<?=USER_IMAGE_FOLDER.'/'.($user->picture ?? DEFAULT_USER_IMAGE)?>"
         				class="cover enlarge-image" alt="Foto del usuario <?=$user->displayname?>">    					
         			<figcaption>Foto del usuario <?="$user->displayname"?></figcaption>
-        			<?php if($user->foto) {?>
+        			<?php if($user->picture) {?>
         			<form method="POST" action="/User/dropcover" class="no-border">
         				<input type="hidden" name="id" value="<?=$user->id?>">
         				<input type="submit" class="button-danger" name="borrar" value="Eliminar foto">
         			</form>
         			<?php } ?>	
         		</figure>    			
-    		</section>
-    		
-    		<section>
-    									
-    			 <h2>Productos de <?= $user->displayname?></h2>
-    				<?php  if(Login::user()->id ==  $user->id ){?>  			
-    				<a class="button" href="/Producto/create/<?=$producto->idusers?>">
-    					Nuevo producto
-    				</a>
-    				<?php } ?>
-    				<?php 
-    			 	if (!$productos){
-    				    echo "<div class='warning p2'><p>No tienes productos a la venta.</p></div>";
-    				}else{ ?>    				
-        				<table class="table w100 centered-block">
-        					<tr>    					
-        						<th>Título</th><th>Precio</th><th>Estado</th><?php  if(lOGIN::user()->id ==  $user->id ){?><th>Operaciones</th><?php }?>
-        					</tr>        					
-        				<?php foreach($productos as $producto){ ?>			     			     	
-            				<tr>
-            					<td><a href='/Producto/show/<?= $producto->id ?>'><?=$producto->titulo?></td>
-            					<td><?=$producto->precio?></td>
-            					<td><?=$producto->estado?></td>
-            					<?php  if(lOGIN::user()->id ==  $user->id ){?>
-            					<td class="centered">  
-            							<a class="button" href="/Producto/edit/<?= $producto->id?>">Editar</a> 
-            							                                 
-                                        <a class="button" href="/Producto/delete/<?= $producto->id ?>">Borrar</a>           
-                                   
-                                </td>
-                                <?php } ?>                                
-            				</tr>            			
-            			<?php } ?>
-            			<?php } ?>
-            			</table>
-            		
-            	</section>
+    		</section>    		
+        		<section>
+        									
+        			 <h2>Publicaciones de <?= $user->displayname?></h2>
+        				<?php  if(Login::user()->id ==  $user->id ){?>  			
+        				<a class="button" href="/Place/create/<?=user()->id?>">
+        					Nuevo publicación
+        				</a>
+        				<?php } ?>
+        				<?php 
+        			 	if (!$places){
+        				    echo "<div class='warning p2'><p>No tienes publicaciones.</p></div>";
+        				}else{ ?>    				
+            				<table class="table w100 centered-block">
+            					<tr>    					
+            						<th>Título</th><th>Tipo</th><th>Localización</th><th>Operaciones</th>
+            					</tr>        					
+            				<?php foreach($places as $place){ ?>			     			     	
+                				<tr>
+                					<td><a href='/Place/show/<?= $place->id ?>'><?=$place->name?></td>
+                					<td><?=$place->type?></td>
+                					<td><?=$place->location?></td>
+                					
+                					<td class="centered">  
+                							<a class="button" href="/Place/edit/<?= $places->id?>">Editar</a> 
+                							                                 
+                                            <a class="button" href="/Place/delete/<?= $places->id ?>">Borrar</a>           
+                                       
+                                    </td>
+                                                                   
+                				</tr>            			
+                			<?php } ?>
+                			</table>
+                			<?php } ?>
+                			
+                		
+                	</section>
     		
     		    		
     		<div class="centrado">
     			<a class="button" onclick="history.back()">Atrás</a>
-    			<a class="button" href="/Producto/list/">Lista de productos</a>
+    			<a class="button" href="/Place/list/">Lista de productos</a>
     			<?php  if(Login::user()->id ==  $user->id ){?>
     			<a class="button" href="/User/edit/<?= $user->id?>">Editar</a>
-    			<a class="button" href="/User/delete/<?= $user->id?>">Darme de baja</a>
+    			
     			<?php } ?>    		
     		</div>
 		</main>

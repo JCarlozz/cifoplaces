@@ -41,10 +41,11 @@
         			<p><b>Longitud:</b>			<?=$place->longitude?></p>
         			<p><b>Descripción:</b>		<?=$place->description ? paragraph($place->description) : 'SIN DETALLES'?></p>
         			
-        			    				   			
+        			<?php  if(Login::check() || Login::isAdmin() ){?>   				   			
     				<a class="button" href="/Photo/create/<?=$place->id?>">
     					Añadir foto
-    				</a>        			
+    				</a> 
+    				<?php } ?>       			
         			   		
     			</div>
     			<figure class="flex2 centrado p2">
@@ -63,7 +64,7 @@
                         <?php if (!empty($photo->file)) { ?>
                             <figure class="galeria-lugares">
                                 <a href="/Photo/show/<?= $photo->id ?>">
-                                    <img src="<?= FOTO_IMAGE_FOLDER . '/' . $photo->file ?>" class="large enlarge-image">
+                                    <img src="<?= FOTO_IMAGE_FOLDER . '/' . $photo->file ?>">
                                 </a>                 
                             </figure>
                         <?php } ?>
@@ -88,13 +89,17 @@
                                     <p class="comment-text"><?= $comment->created_at ?></p>
                                     
                                 </div>
+                                <?php  if(Login::user()->id ==  $comment->iduser || Login::isAdmin() ){?>
                                 <div class="comment-actions">
                                     <form method="POST" action="/Comment/destroyplace">
                                     	<input type="hidden" name="iduser" value="<?= user()->id ?>">
                                         <input type="hidden" name="id" value="<?= $comment->id ?>">
+                                         
                                         <button type="submit" class="button small" name="borrar">Eliminar</button>
+                                        
                                     </form>
                                 </div>
+                                <?php } ?>
                             </div>
                         <?php } ?>
                     </div>
@@ -106,7 +111,9 @@
                     <textarea name="text" placeholder="Escribe aquí tu comentario"></textarea>
                     <input type="hidden" name="iduser" value="<?= user()->id ?>">
                     <input type="hidden" name="idplace" value="<?= $place->id ?>">
+                    <?php  if(Login::check() || Login::isAdmin() ){?> 
                     <button type="submit" class="button" name="guardar">Añadir comentario</button>
+                    <?php } ?>
                 </form>
             </section>                       
     		

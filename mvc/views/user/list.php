@@ -68,7 +68,7 @@
     				<tr>
     					<td class="centrado">
     						<a href='/User/show/<?=$user->id?>'>
-    							<img src="<?=USERS_IMAGE_FOLDER.'/'.($user->foto ?? DEFAULT_USERS_IMAGE)?>"
+    							<img src="<?=USER_IMAGE_FOLDER.'/'.($user->foto ?? DEFAULT_USER_IMAGE)?>"
     								class="table-image" alt="Portada de <?= $user->displayname ?>"
     								title="Portada de <?= $user->displayname ?>">    						
     						</a>

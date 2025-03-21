@@ -57,11 +57,9 @@
                     );
                 }?>
                 </div>
-                
-                <!-- Tabla con los resultados -->
                                     
-                    <section class="flex-container-galeria">                    
-                    <?php foreach ($places as $place) { ?>
+                <section class="flex-container-galeria">                    
+                   <?php foreach ($places as $place) { ?>
 						<div class="flex-item">
                         	<a href='/Place/show/<?= $place->id ?>'>
                             	<img src="<?= FOTO_IMAGE_FOLDER . '/' . ($place->mainpicture ?? DEFAULT_FOTO_IMAGE) ?>"
@@ -87,6 +85,7 @@
             <div class="centred">
                 <a class="button" onclick="history.back()">Atrás</a>
             </div>
+            
         </main>
 		<?= $template->footer() ?>
 		<?= $template->version() ?>		

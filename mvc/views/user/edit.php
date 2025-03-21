@@ -27,11 +27,7 @@
 		<?= $template->messages() ?>
 		
 		<main>
-			<?php  if(Login::user()->id ==  $user->id || Login::isAdmin() ){?>
-			<?php } else {
-                    echo "<script>alert('No tienes permisos para acceder a esta página.'); window.location.href='/';</script>";
-                    exit();}?>	
-						
+									
     		<h1><?= APP_NAME ?></h1>
     		<h2>Editar el usuario <?= $user->displayname?></h2>
     		<section class="flex-container gap2">
@@ -63,17 +59,18 @@
         		</form>
         		
         		<div class="flex1 centrado p2">
-                    <img src="<?=USERS_IMAGE_FOLDER.'/'.($user->picture ?? DEFAULT_USERS_IMAGE)?>"
-                         class="cover" id="preview-image" alt="Previsualización de la foto">
+                    <img src="<?=USER_IMAGE_FOLDER.'/'.($user->picture ?? DEFAULT_USER_IMAGE)?>"
+                         class="cover enlarge-image" alt="Foto del usuario ">
                     
                     <figcaption>Foto del usuario <?= $user->displayname ?? 'Desconocido' ?></figcaption>
-                
+                	
                     <?php if (!empty($user->picture)) { ?>
                         <form method="POST" action="/User/dropcover" class="no-border">
                             <input type="hidden" name="id" value="<?= $user->id ?>">
                             <input type="submit" class="button-danger" name="borrar" value="Eliminar portada">
                         </form>
                     <?php } ?>
+                    
                 </div>
     		</section>
     		
@@ -84,7 +81,7 @@
     						location.href='/Ejemplar/destroy/'+id
     				}
     			</script>
-    			<?php if(Login::isAdmin()){?>
+    			<?php if(Login::isAdmin()) { ?>
     			<section>
                     <h2>Roles de <?= $user->displayname ?></h2>
                 
@@ -108,7 +105,7 @@
                                 </tr>
                             <?php } ?>
                         </table>
-                    <?php } ?>
+                    
                 
                     <form class="w50 m0 no-border" method="POST" action="/User/addrole">
                         <input type="hidden" name="id" value="<?= $user->id ?>">    						
@@ -120,6 +117,7 @@
                         <input class="button-success" type="submit" name="add" value="Añadir rol">
                     </form>   		
                 </section>
+               <?php } ?>
                <?php } ?>
     		</section>		
 			<div class="centrado my2">

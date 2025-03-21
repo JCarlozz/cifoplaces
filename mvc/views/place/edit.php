@@ -2,7 +2,7 @@
 <html lang="es">
 	<head>
 		<meta charset="UTF-8">
-		<title>Edición de productos - <?= APP_NAME ?></title>
+		<title>Edición del lugar - <?= APP_NAME ?></title>
 		
 		<!-- META -->
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,31 +17,31 @@
 	</head>
 	<body>
 		<?= $template->login() ?>
-		<?= $template->header("Edicion del $producto->titulo") ?>
+		<?= $template->header("Edición del lugar $place->name") ?>
 		<?= $template->menu() ?>
 		<?= $template->breadCrumbs([
-		    'productos'=>'/producto',
-		    $producto->titulo=>"/Producto/show/$producto->id",
+		    'place'=>'/place/list',
+		    $place->name=>"/Place/show/$place->id",
 		    'Edición'=>NULL
 		]) ?>
 		<?= $template->messages() ?>
 		
 		<main>
     		<h1><?= APP_NAME ?></h1>
-    		<h2>Edición de producto <?= $producto->titulo?></h2>
+    		<h2>Edición del lugar <?= $place->name?></h2>
     		<section class="flex-container gap2">
     		
-    		<form method="POST" action="/Producto/update" class="flex2 no-border" enctype="multipart/form-data">
+    		<form method="POST" action="/Place/update" class="flex2 no-border" enctype="multipart/form-data">
 			
     			<!-- input oculto que contiene ID -->
-    			<input type="hidden" name="id" value="<?=$producto->id?>">    					
+    			<input type="hidden" name="id" value="<?=$place->id?>">    					
     			
     			
     			<label>Título</label>
-    			<input type="text" name="titulo" value="<?=old('titulo', $producto->titulo)?>">
+    			<input type="text" name="name" value="<?=old('name', $place->name)?>">
     			<br>
-    			<label>Precio</label>
-    			<input type="text" name="precio" value="<?=old('precio', $producto->precio)?>">
+    			<label>Tipo</label>
+    			<input type="text" name="type" value="<?=old('type', $place->type)?>">
     			<br>
     			<label>Estado</label>
     			<input type="text" name="estado" value="<?=old('estado', $producto->estado)?>">

@@ -8,14 +8,15 @@ class PhotoController extends Controller{
         
         $photo = Photo::findOrFail($id, "No se encontró la foto indicada.");
         
-        $comments = $photo->hasMany('Comment', 'idphoto');
+        $comments = $photo->hasMany('V_comment');
+        
+        
         
         $user= $photo->belongsTo('User');
         
         return view('photo/show',[
             'photo'     => $photo,
-            'comments'  => $comments,
-            'user'      => $user
+            'comments'  => $comments
         ]);
     }
     

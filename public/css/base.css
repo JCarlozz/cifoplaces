@@ -375,7 +375,7 @@ span.path::before{
 }
 
 .button{
-	background: linear-gradient(var(--primary-soft-color), var(--primary-bg-color));
+	background:var(--primary-bg-color);
 }
 
 .button:hover{
@@ -549,14 +549,36 @@ img.text-top	{ vertical-align: text-top }
     position: relative;
 }
 
+
 .flex-item:hover {
-    transform: scale(1.05); /* Efecto de zoom al pasar el ratón */
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    transform: scale(1.); /* Efecto de zoom al pasar el ratón */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.8);
 }
 
 .flex-item img {
     max-width: 100%; /* Asegura que la imagen no se desborde */
     max-height: 100%; /* Asegura que la imagen no se desborde */
+    object-fit: cover; /* Ajusta la imagen para cubrir el contenedor */
+    border-radius: 8px;
+}
+
+.flex-inicio {
+	display: absolut;
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center; /* Centra verticalmente */
+    heigth: 50rem;
+    /*width: 25rem;*/
+    overflow: hidden;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+}
+
+
+.flex-inicio img {
+    /*max-width: auto; /* Asegura que la imagen no se desborde */
+    /*max-height: 100%; /* Asegura que la imagen no se desborde */
     object-fit: cover; /* Ajusta la imagen para cubrir el contenedor */
     border-radius: 8px;
 }
@@ -917,9 +939,7 @@ body{
 body>header{
 	display: flex;
 	flex-wrap: nowrap;
-	padding: 10px 2%;
-	background-image: url(../images/template/header_base.jpg);
-	background-size: cover;
+	padding: 10px 2%;	
 	align-items: center;
 }
 
@@ -961,7 +981,7 @@ body>header p{
 /* Menú -------------------------------------------------------- */
 .menu{
 	padding: 8px 20px;
-	background: linear-gradient(45deg, var(--primary-bg-color), var(--primary-soft-color));
+	background: var(--primary-bg-color);
 	color: var(--primary-font-color);
 	border-radius: 3px;
 	font-size: 0;

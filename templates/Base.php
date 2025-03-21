@@ -102,7 +102,7 @@ class Base implements TemplateInterface{
             $html = "
             <div class='right'>
                 <span class='pc'>Bienvenido</span>
-                <a class='negrita' href='/User/home'>
+                <a class='negrita' href='/User/show/".user()->id."'>
                     $user->displayname
                 </a>
                 <span class='pc cursiva'>&lt;$user->email&gt;</span>";
@@ -174,34 +174,28 @@ class Base implements TemplateInterface{
         // parte izquierda (operaciones para todos los usuarios)
         $html = "<menu class='menu'>";
         $html .=   "<li><a href='/'>Inicio</a></li>";
+        if(Login::check())
+        $html .=   "<li><a href='/User/show/".user()->id."'>Home</a></li>";
         
         $html .=   "<li><a href='/Place/list'>Lugares</a></li>";
-        
+        if(Login::check())
         $html .=   "<li><a href='/Place/create'>Nuevo lugar</a></li>";
         
         $html .=   "<li><a href='/Contacto'>Contacto</a></li>";
         
-        // Enlace a los ejemplos de maquetación.
-        // Lo eliminaremos en producción junto con la carpeta mvc/views/examples y el ExampleController
-        $html .=   "<li><a href='/Example'>Ejemplos de maquetación</a></li>";
+        if(Login::isAdmin())
+            $html .=   "<li><a href='/Panel/admin'>Panel del administrador</a></li>";
+        
            
         // Enlace a los tests de ejemplo (solamente para usuarios con alguno de los TEST_ROLES)
         // Lo eliminaremos en producción, junto a la carpeta test y el TestController
         if(Login::oneRole(TEST_ROLES))
             $html .=   "<li><a href='/Test'>Test</a></li>";
-        
-        // Enlace a las estadística de visitas (solamente para usuarios con alguno de los STAT_ROLES)
-        if(SAVE_STATS && Login::oneRole(STATS_ROLES))
-            $html .=   "<li><a href='/Stat'>Visitas</a></li>";
-        
+                
         // Enlace a la gestión de errores (solamente para usuarios con alguno de los ERROR_ROLES)
-        if((Login::oneRole(ERROR_ROLES)) && (DB_ERRORS || LOG_ERRORS || LOG_LOGIN_ERRORS))
+        if(Login::isAdmin())
             $html .=   "<li><a href='/Error/list'>Errores</a></li>";
-         
-        // Enlace al repositorio de FastLight en GitHub  
-        // Lo podéis eliminar, para que no aparezca en vuestras aplicaciones
-        $html .=   "<li><a href='https://github.com/robertsallent/fastlight'>GitHub</a></li>";
-            
+                   
         $html .= "</menu>";
         $html .= "</nav>";
         

@@ -48,11 +48,13 @@
         				class="cover enlarge-image" alt="Foto del usuario <?=$photo->alt?>">    					
         			<figcaption>Foto <?="$photo->name"?></figcaption>
         			<?php if($photo->file) {?>
+        			<?php  if(Login::user()->id ==  $comment->iduser){?>
         			<form method="POST" action="/Photo/dropcover" class="no-border">
         				<input type="hidden" name="id" value="<?=$photo->id?>">
         				<input type="hidden" name="id" value="<?=$photo->id?>">
         				<input type="submit" class="button-danger" name="borrar" value="Eliminar foto">
         			</form>
+        			<?php } ?>
         			<?php } ?>	
         		</figure>    			
     		</section>	
@@ -64,12 +66,16 @@
                         <?php foreach ($comments as $comment) { ?>
                             <div class="comment">
                                 <figure class="comment-avatar">
-                                    <img src="<?= USER_IMAGE_FOLDER . '/' . ($user->picture ?? DEFAULT_USER_IMAGE) ?>" alt="Imagen de <?= $user->displayname ?>">
+                                    <img src="<?= USER_IMAGE_FOLDER . '/' . ($comment->userpicture ?? DEFAULT_USER_IMAGE) ?>" alt="Imagen de <?= $user->displayname ?>">
                                 </figure>
+                                
                                 <div class="comment-content">
-                                    <p class="comment-author"><?= $user->displayname ?></p>
+                                    <p class="comment-author"><?= $comment->username ?></p>
                                     <p class="comment-text"><?= $comment->text ?></p>
+                                    <p class="comment-text"><?= $comment->created_at ?></p>
+                                    
                                 </div>
+                                <?php  if(Login::user()->id ==  $comment->iduser || Login::isAdmin() ){?>
                                 <div class="comment-actions">
                                     <form method="POST" action="/Comment/destroy">
                                     	<input type="hidden" name="iduser" value="<?= user()->id ?>">
@@ -77,6 +83,7 @@
                                         <button type="submit" class="button small" name="borrar" >Eliminar</button>
                                     </form>
                                 </div>
+                                <?php }?>
                             </div>
                         <?php } ?>
                     </div>

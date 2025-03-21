@@ -50,7 +50,7 @@
     			
     			</div>
     			<figure class="flex1 centrado p2">
-        			<img src="<?=USERS_IMAGE_FOLDER.'/'.($user->picture ?? DEFAULT_USERS_IMAGE)?>"
+        			<img src="<?=USER_IMAGE_FOLDER.'/'.($user->picture ?? DEFAULT_USER_IMAGE)?>"
         				class="cover enlarge-image" alt="Foto del usuario <?=$user->displayname?>">    					
         			<figcaption>Foto del usuario <?="$user->displayname"?></figcaption>
         			<?php if($user->picture) {?>
@@ -61,49 +61,7 @@
         			<?php } ?>	
         		</figure>    			
     		</section>
-    		
-    		<section>
-    									
-    			 <h2>Productos de <?= $user->displayname?></h2>
-    							
-    				<a class="button" href="/Producto/create/<?=$producto->idusers?>">
-    					Nuevo producto
-    				</a>
-    				
-    				<?php 
-    			 	if (!$productos){
-    				    echo "<div class='warning p2'><p>No tienes productos a la venta.</p></div>";
-    				}else{ ?>    				
-        				<table class="table w100 centered-block">
-        					<tr>    					
-        						<th>Imagen</th><th>Título</th><th>Precio</th><th>Estado</th><?php  if(lOGIN::user()->id ==  $user->id ){?><th>Operaciones</th><?php }?>
-        					</tr>        					
-        				<?php foreach($productos as $producto){ ?>			     			     	
-            				<tr>
-            					<td>
-            						<figure>
-    									<img src="<?=PRO_IMAGE_FOLDER.'/'.($producto->foto ?? DEFAULT_PRO_IMAGE)?>"
-    									class="small" id="preview-image" alt="Previsualización de la imagen">    				
-    								</figure>
-    							</td>
-            					<td><a href='/Producto/show/<?= $producto->id ?>'><?=$producto->titulo?></td>
-            					<td><?=$producto->precio?></td>
-            					<td><?=$producto->estado?></td>
-            					<?php  if(Login::user()->id ==  $user->id ){?>
-            					<td class="centered">  
-            							<a class="button" href="/Producto/edit/<?= $producto->id?>">Editar</a> 
-            							                                 
-                                        <a class="button" href="/Producto/delete/<?= $producto->id ?>">Borrar</a>           
-                                   
-                                </td>
-                                <?php } ?>                                
-            				</tr>            			
-            			<?php } ?>
-            			<?php } ?>
-            			</table>
-            		
-            	</section>
-    		
+    		   		
     		    		
     		<div class="centrado">
     			<a class="button" onclick="history.back()">Atrás</a>

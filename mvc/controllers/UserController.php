@@ -54,9 +54,9 @@
             
             //Auth::admin();
             
-            $user = User::findOrFail($id, "No se encontró el usuario indicado.");
+            $user = User::findOrFail($id, "No se encontró el usuario.");
             
-            $places = $user->hasMany('User', 'idusers');
+            $places = $user->hasMany('Place');
             
             return view('user/show',[
                 'user'  => $user,
@@ -81,8 +81,9 @@
             
             //Auth::check();
             
+                       
             return view('user/home', [
-               'user'=>Login::user() 
+               'user'=>Login::user()
             ]);
         }
         
@@ -127,7 +128,7 @@
                             );
                         
                         if ($file) {
-                            $user->picture = $file->store('../public/' .USERS_IMAGES_FOLDER, 'USER_');
+                            $user->picture = $file->store('../public/'.USER_IMAGE_FOLDER, 'USER_');
                             $user->update();
                         }
                         
@@ -245,7 +246,7 @@
                           
                           
                           Session::success("Se ha borrado de el usuario $user->displayname.");
-                          return view("/User/list");
+                          return redirect("/Logout");
                           
                   }catch (SQLException $e){
                       
