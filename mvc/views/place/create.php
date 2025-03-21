@@ -34,7 +34,7 @@
 				
 				<div class="flex2">
 				
-					<input type="hidden" name="idusers" value=<?=user()->id?>>
+					<input type="hidden" name="iduser" value=<?=user()->id?>>
 					<label>Título</label>
 					<input type="text" name="name" value="<?=old('name')?>">
 					<br>

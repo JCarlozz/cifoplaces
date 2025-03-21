@@ -27,6 +27,10 @@
 		
 		<main>
     		<h1><?= APP_NAME ?></h1>
+    		<?php  if(Login::user()->id ==  $place->iduser || Login::isAdmin() ){?>
+    		<a class="button" href="/Place/edit/<?=$place->id?>">Editar lugar</a>
+    		<?php } ?>			
+    				
     		<section id="detalles" class="flex-container gap2">
     			<div class="flex2">
         			<h2><?= $place->name?></h2>
@@ -86,7 +90,7 @@
                                 <div class="comment-content">
                                     <p class="comment-author"><?= user()->displayname ?></p>
                                     <p class="comment-text"><?= $comment->text ?></p>
-                                    <p class="comment-text"><?= $comment->created_at ?></p>
+                                    <p class="comment-date"><?= $comment->created_at ?></p>
                                     
                                 </div>
                                 <?php  if(Login::user()->id ==  $comment->iduser || Login::isAdmin() ){?>
@@ -106,15 +110,16 @@
                 <?php } else { ?>
                     <p class="no-comments">No hay comentarios aún. ¡Sé el primero en comentar!</p>
                 <?php } ?>
-            
+            	<?php  if(Login::check() || Login::isAdmin() ){?> 
                 <form method="POST" action="/Comment/store" class="comment-form">
                     <textarea name="text" placeholder="Escribe aquí tu comentario"></textarea>
                     <input type="hidden" name="iduser" value="<?= user()->id ?>">
                     <input type="hidden" name="idplace" value="<?= $place->id ?>">
-                    <?php  if(Login::check() || Login::isAdmin() ){?> 
+                    
                     <button type="submit" class="button" name="guardar">Añadir comentario</button>
-                    <?php } ?>
+                    
                 </form>
+                <?php } ?>
             </section>                       
     		
     		<div class="centrado">

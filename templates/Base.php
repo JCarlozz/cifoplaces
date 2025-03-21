@@ -149,11 +149,7 @@ class Base implements TemplateInterface{
                     <a href='/'>
                         <img alt='FastLight Logo' src='/images/template/fastlight_base.png'>
                     </a>
-                </figure>
-                <hgroup>
-            	   <h1>".($title ?? 'Página sin título' )."<span class='small italic'> en ".APP_NAME."</span></h1>
-                   ".($subtitle ? '<p>'.$subtitle.'</p>' : '')."
-                </hgroup>  
+                </figure>                
             </header>
         ";
     }

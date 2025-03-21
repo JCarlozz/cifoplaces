@@ -2,7 +2,7 @@
 <html lang="es">
 	<head>
 		<meta charset="UTF-8">
-		<title>Editar el usuario <?=$user->id?> - <?= APP_NAME ?></title>
+		<title>Editar foto <?=$photo->name?> - <?= APP_NAME ?></title>
 		
 		<!-- META -->
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,12 +17,12 @@
 	</head>
 	<body>
 		<?= $template->login() ?>
-		<?= $template->header('Edición del usuario') ?>
+		<?= $template->header('Editar foto') ?>
 		<?= $template->menu() ?>
 		<?= $template->breadCrumbs([
-		    'Usuario'=> 'User/list',
-		    "$user->nombreyapellidos" => "User/show/$user->id",
-		    'Editar usuario'=>NULL
+		    'Lugar'=> 'Place/list',
+		    "$photo->name" => "Photo/show/$photo->id",
+		    'Editar foto'=>NULL
 		]) ?>
 		<?= $template->messages() ?>
 		
@@ -33,36 +33,34 @@
                     exit();}?>	
 						
     		<h1><?= APP_NAME ?></h1>
-    		<h2>Editar el usuario <?= $user->nombreyapellidos?></h2>
+    		<h2>Editar foto <?= $photo->name?></h2>
     		<section class="flex-container gap2">
     		
-    		<form method="POST" action="/User/update" class="flex2 no-border" enctype="multipart/form-data">
+    		<form method="POST" action="/Photo/update" class="flex2 no-border" enctype="multipart/form-data">
 			
     			<!-- input oculto que contiene ID -->
-    			<input type="hidden" name="id" value="<?=$user->id?>">
-    					
+    			<input type="hidden" name="id" value="<?=$photo->id?>">
+    			<input type="hidden" name="iduser" value="<?=$photo->iduser?>">	
+    			<input type="hidden" name="idplace" value="<?=$photo->idplace?>">
     			
     			<label>Nombre</label>
-    			<input type="text" name="nombreyapellidos" value="<?=old('nombreyapellidos', $user->nombreyapellidos)?>">
+    			<input type="text" name="name" value="<?=old('name', $photo->name)?>">
     			<br>
-    			<label>Email</label>
-    			<input type="text" name="email" value="<?=old('email', $user->email)?>">
+    			<label>Lugar</label>
+    			<input type="text" name="description" value="<?=old('description', $photo->description)?>">
     			<br>
-    			<label>Teléfono</label>
-    			<input type="text" name="phone" value="<?=old('phone', $user->phone)?>">
-    			<br> 
-    			<label>Ciudad</label>
-    			<input type="text" name="poblacion" value="<?=old('poblacion', $user->poblacion)?>">
+    			<label>Descripcíon</label>
+    			<input type="text" name="alt" value="<?=old('alt', $photo->alt)?>">
     			<br>
-    			<label>Provincia</label>
-    			<input type="text" name="provincia" value="<?=old('provincia', $user->provincia)?>">
-    			<br> 
-    			<label>Dirección</label>
-    			<input type="text" name="direccion" value="<?=old('direccion', $user->direccion)?>">
+    			<label>Fecha</label>
+    			<input type="date" name="date" value="<?= old('date', $photo->date)?>">
     			<br>
+    			<label>Hora</label>
+    			<input type="time" name="time" value="<?= old('time', $photo->time)?>"> 		
+    			
     			   			
     			<label>Imagen de perfil</label>
-    			<input type="file" name="foto" accept="image/*" id="file-with-preview">
+    			<input type="file" name="file" accept="image/*" id="file-with-preview">
     			<br>    			
     			
     			<div class="centrado my2">
@@ -72,66 +70,21 @@
     		</form>
     		
     		<figure class="flex1 centrado p2">
-    			<img src="<?=USER_IMAGE_FOLDER.'/'.($user->foto ?? DEFAULT_USER_IMAGE)?>"
+    			<img src="<?=FOTO_IMAGE_FOLDER.'/'.($photo->file ?? DEFAULT_FOTO_IMAGE)?>"
     				class="cover" id="preview-image" alt="Previsualización de la foto">
-    			<figcaption>Foto del usuario <?="$user->nombreyapellidos"?></figcaption>
-    			<?php if($user->foto) {?>
-    			<form method="POST" action="/User/dropcover" class="no-border">
+    			<figcaption>Foto <?="$photo->name"?></figcaption>
+    			<?php if($photo->file) {?>
+    			<form method="POST" action="/Photo/dropcover" class="no-border">
     				<input type="hidden" name="id" value="<?=$user->id?>">
     				<input type="submit" class="button-danger" name="borrar" value="Eliminar portada">
     			</form>
     			<?php } ?>	
     		</figure>
-    		</section>
-    		<section>
-    			<script>
-    				function confirmar(id){
-    					if(confirm('Seguro que deseas eliminar?'))
-    						location.href='/Ejemplar/destroy/'+id
-    				}
-    			</script>
-    			<?php if(Login::isAdmin()){?>
-    			<section>
-                    <h2>Roles de <?= htmlspecialchars($user->nombreyapellidos) ?></h2>
-                
-                    <?php if (empty($user->roles)) { ?>
-                        <div class='warning p2'><p>No se han indicado roles.</p></div>
-                    <?php } else { ?>
-                        <table class="table w100">
-                            <tr>
-                                <th>Rol</th><th>Operaciones</th>
-                            </tr>
-                            <?php foreach ($user->roles as $role) { ?> <!-- Iteramos sobre los roles del usuario actual -->
-                                <tr>    						
-                                    <td><?= $role ?></td>
-                                    <td class="centrado">
-                                        <form method="POST" class="no-border" action="/User/removerole">
-                                            <input type="hidden" name="id" value="<?= $user->id ?>">
-                                            <input type="hidden" name="role" value="<?= $role ?>">
-                                            <input type="submit" class="button-danger" name="remove" value="Borrar">
-                                        </form>
-                                    </td>	
-                                </tr>
-                            <?php } ?>
-                        </table>
-                    <?php } ?>
-                
-                    <!-- Formulario para agregar roles -->
-                    <form class="w50 m0 no-border" method="POST" action="/User/addrole">
-                        <input type="hidden" name="id" value="<?= $user->id ?>">    						
-                        <select name="role">
-                            <?php foreach (USER_ROLES as $roleName) { ?>
-                                <option value="<?= $roleName ?>"><?= $roleName ?></option>
-                            <?php } ?>
-                        </select>
-                        <input class="button-success" type="submit" name="add" value="Añadir rol">
-                    </form>   		
-                </section>
-               <?php } ?>
+    		</section> 		
     				
 			<div class="centrado my2">
 				<a class="button" onclick="history.back()">Atrás</a>
-				<a class="button" href="/User/list">Lista de usuarios</a>
+				<a class="button" href="/Place/list">Lista de lugares</a>
 			</div>  
 			
 		</main>

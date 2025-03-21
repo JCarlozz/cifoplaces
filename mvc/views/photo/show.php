@@ -28,7 +28,10 @@
 		<main>
 		
 		
-    		<h1><?= APP_NAME ?></h1>    		
+    		<h1><?= APP_NAME ?></h1> 
+    		<div>
+    			<a class="button" href="/Photo/edit/<?= $photo->id ?>">Editar</a> 
+    		</div>   		
     		
     		<section id="detalles" class="flex-container gap2">
     			<div class="flex2">
@@ -47,8 +50,11 @@
         			<img src="<?=FOTO_IMAGE_FOLDER.'/'.($photo->file ?? DEFAULT_FOTO_IMAGE)?>"
         				class="cover enlarge-image" alt="Foto del usuario <?=$photo->alt?>">    					
         			<figcaption>Foto <?="$photo->name"?></figcaption>
+        			
+        			<?php  if(Login::user()->id ==  $photo->iduser){?>
         			<?php if($photo->file) {?>
-        			<?php  if(Login::user()->id ==  $comment->iduser){?>
+        			
+        			
         			<form method="POST" action="/Photo/dropcover" class="no-border">
         				<input type="hidden" name="id" value="<?=$photo->id?>">
         				<input type="hidden" name="id" value="<?=$photo->id?>">
@@ -72,7 +78,7 @@
                                 <div class="comment-content">
                                     <p class="comment-author"><?= $comment->username ?></p>
                                     <p class="comment-text"><?= $comment->text ?></p>
-                                    <p class="comment-text"><?= $comment->created_at ?></p>
+                                    <p class="comment-date"><?= $comment->created_at ?></p>
                                     
                                 </div>
                                 <?php  if(Login::user()->id ==  $comment->iduser || Login::isAdmin() ){?>
@@ -90,13 +96,14 @@
                 <?php } else { ?>
                     <p class="no-comments">No hay comentarios aún. ¡Sé el primero en comentar!</p>
                 <?php } ?>
-            
+            	<?php  if(Login::user()->id ==  $photo->iduser){?>
                 <form method="POST" action="/Comment/storephoto" class="comment-form">
                     <textarea name="text" placeholder="Escribe aquí tu comentario"></textarea>
                     <input type="hidden" name="iduser" value="<?= user()->id ?>">
                     <input type="hidden" name="idphoto" value="<?= $photo->id ?>">
                     <button type="submit" class="button" name="guardar">Añadir comentario</button>
                 </form>
+                <?php } ?>
             </section>   		
     		
     		    		

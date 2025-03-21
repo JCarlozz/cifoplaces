@@ -33,6 +33,67 @@ class PhotoController extends Controller{
         ]);
     }
     
+    public function update(){
+        
+        //Auth::admin();
+        
+        if (!request()->has('actualizar'))      //si no llega el formulario...
+            throw new FormException('No se recibieron datos');
+            
+            $id= intval(request()->post('id'));     //recuperar el ID vía POST
+            
+            $photo= Photo::findOrFail($id, "No se ha encontrado la foto.");
+            
+            $photo->name            =request()->post('name');
+            $photo->alt             =request()->post('alt');
+            $photo->description     =request()->post('description');
+            $photo->date            =request()->post('date');
+            $photo->time            =request()->post('time');
+            $photo->idplace         =request()->post('idplace');
+            $photo->iduser          =intval(user()->id);
+            
+            
+            //intenta actualizar el usuario
+            try{
+                $photo->update();
+                
+                $file = request()->file(
+                    'file',
+                    8000000,
+                    ['image/png', 'image/jpeg', 'image/gif', 'image/webp']
+                    );
+                
+                //si hay fichero, lo guardo y actualizamos el campo "portada"
+                if ($file){
+                    if ($photo->file)    //elimina el fichero anterior (si lo hay)
+                        File::remove('../public/'.FOTO_IMAGE_FOLDER.'/'.$photo->file);
+                        
+                        $photo->file = $file->store('../public/'.FOTO_IMAGE_FOLDER, 'FOTO_');
+                        $photo->update();
+                }
+                Session::success("Actualización la foto $photo->name correcta.");
+                return redirect("/Photo/show/$photo->id");
+                
+                //si se produce un error al guardar el libro...
+            }catch (SQLException $e){
+                
+                Session::error("Hubo errores en la actualización del usuario $user->displayname.");
+                
+                if(DEBUG)
+                    throw new SQLException($e->getMessage());
+                    
+                    return redirect("/Photo/edit/$photo->id");
+                    
+            }catch (UploadException $e){
+                Session::warning("Cambios guardados, pero no se modificó la imagen.");
+                
+                if(DEBUG)
+                    throw new UploadException($e->getMessage());
+                    
+                    return redirect("/Photo/edit/$photo->id");
+            }
+    }  
+    
        
     public function create(int $idplace = 0){
         

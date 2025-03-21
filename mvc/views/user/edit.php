@@ -58,12 +58,11 @@
         			</div>
         		</form>
         		
-        		<div class="flex1 centrado p2">
+        		<figure class="flex2 centrado p2">
                     <img src="<?=USER_IMAGE_FOLDER.'/'.($user->picture ?? DEFAULT_USER_IMAGE)?>"
-                         class="cover enlarge-image" alt="Foto del usuario ">
-                    
+                         class="large enlarge-image" id="preview-image" alt="Foto del usuario ">                    	
                     <figcaption>Foto del usuario <?= $user->displayname ?? 'Desconocido' ?></figcaption>
-                	
+                </figure>
                     <?php if (!empty($user->picture)) { ?>
                         <form method="POST" action="/User/dropcover" class="no-border">
                             <input type="hidden" name="id" value="<?= $user->id ?>">

@@ -27,6 +27,7 @@
 		<?= $template->messages() ?>
 		
 		<main>
+		<?php  if(Login::user()->id ==  $place->iduser || Login::isAdmin() || Login::oneRole('[ROLE_MODERATOR]')){?>
     		<h1><?= APP_NAME ?></h1>
     		<h2>Edición del lugar <?= $place->name?></h2>
     		<section class="flex-container gap2">
@@ -37,33 +38,41 @@
     			<input type="hidden" name="id" value="<?=$place->id?>">    					
     			
     			
-    			<label>Título</label>
-    			<input type="text" name="name" value="<?=old('name', $place->name)?>">
-    			<br>
-    			<label>Tipo</label>
-    			<input type="text" name="type" value="<?=old('type', $place->type)?>">
-    			<br>
-    			<label>Estado</label>
-    			<input type="text" name="estado" value="<?=old('estado', $producto->estado)?>">
-    			<br>
-    			<label>Imagen</label>
-    			<input type="file" name="portada" accept="image/*" id="file-with-preview">
-    			    			
-    			<label>Descripción</label>
-    			<textarea name="descripcion" class="w50"><?=old('descripcion', $producto->descripcion)?></textarea>
-    			<br>
+    			<input type="hidden" name="iduser" value=<?=user()->id?>>
+					<label>Título</label>
+					<input type="text" name="name" value="<?=old('name',$place->name )?>">
+					<br>
+					<label>Tipo</label>
+					<input type="text" name="type" value="<?=old('type',$place->type)?>">
+					<br>					
+					<label>Imagen</label>
+					<input type="file" name="mainpicture" accept="image/*" id="file-with-preview">
+					<br>					
+					<label>Localización</label>
+					<input type="text" name="location" class="w50" value="<?=old('location',$place->location)?>">
+					<br>
+					<label>Latitud</label>
+					<input type="number" name="latitude" class="w50" value="<?=old('latitude',$place->latitude)?>">
+					<br>
+					<label>Longitud</label>
+					<input type="number" name="longitude" class="w50" value="<?=old('longitude',$place->longitude)?>">
+					<br>
+					
+					<label>Descripción</label>
+					<textarea name="description" placeholder="Escribe aquí" class="w50"><?=old('text', $place->text)?></textarea>
+					<br>
     			<div class="centrado my2">
     				<input type="submit" class="button" name="actualizar" value="Actualizar">
     				<input type="reset" class="button" value="Reset">
     			</div>
     		</form>
     		<figure class="flex1 centrado p2">
-    			<img src="<?=PRO_IMAGE_FOLDER.'/'.($producto->fotO ?? DEFAULT_PRO_IMAGE)?>"
+    			<img src="<?=FOTO_IMAGE_FOLDER.'/'.($place->mainpicture ?? DEFAULT_FOTO_IMAGE)?>"
     				class="cover" id="preview-image" alt="Previsualización de la imagen">
-    			<figcaption>Portada de <?="$producto->titulo"?></figcaption>
-    			<?php if($producto->foto) {?>
-    			<form method="POST" action="/Producto/dropcover" class="no-border">
-    				<input type="hidden" name="id" value="<?=$producto->id?>">
+    			<figcaption>Portada de <?="$place->name"?></figcaption>
+    			<?php if($place->mainpicture) {?>
+    			<form method="POST" action="/Place/dropcover" class="no-border">
+    				<input type="hidden" name="id" value="<?=$place->id?>">
     				<input type="submit" class="button-danger" name="borrar" value="Eliminar foto">
     			</form>
     			<?php } ?>	
@@ -73,8 +82,9 @@
     				
 			<div class="centrado my2">
 				<a class="button" onclick="history.back()">Atrás</a>
-				<a class="button" href="/Producto/list">Lista de productos</a>
-			</div>    		
+				<a class="button" href="/Place/list">Lista de lugares</a>
+			</div>
+			<?php } ?>    		
 		</main>
 		<?= $template->footer() ?>
 		<?= $template->version() ?>		

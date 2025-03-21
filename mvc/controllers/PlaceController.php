@@ -85,10 +85,11 @@ class PlaceController extends Controller{
             $place->name            =request()->post('name');
             $place->type            =request()->post('type');
             $place->location        =request()->post('location');
-            $place->description     =request()->post('description');
-            
+            $place->description     =request()->post('description');            
             $place->latitude        =request()->post('latitude');
             $place->longitude       =request()->post('longitude');
+            $place->iduser          =intval(user()->id);
+            
             
             
             //intenta guardar el libro, en caso que la inserción falle vamos a
@@ -188,7 +189,7 @@ class PlaceController extends Controller{
             $place->type            =request()->post('type');
             $place->location        =request()->post('location');
             $place->description     =request()->post('description');
-            $place->mainpicture     =request()->post('mainpicture');
+            
             $place->latitude        =request()->post('latitude');
             $place->longitude       =request()->post('longitude');
             
@@ -207,7 +208,7 @@ class PlaceController extends Controller{
                     if ($place->mainpicture)    //elimina el fichero anterior (si lo hay)
                         File::remove('../public/'.FOTO_IMAGE_FOLDER.'/'.$place->mainpicture);
                         
-                        $place->mainpicture = $file->store('../public/'.FOTO_IMAGE_FOLDER, 'PLA_');
+                        $place->mainpicture = $file->store('../public/'.FOTO_IMAGE_FOLDER, 'FOTO_');
                         $place->update();
                 }
                 Session::success("Actualización del lugar $place->name correcta.");

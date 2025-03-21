@@ -68,10 +68,10 @@
         				<a class="button" href="/Place/create/<?=user()->id?>">
         					Nuevo publicación
         				</a>
-        				<?php } ?>
+        				<?php } ?> 
         				<?php 
-        			 	if (!$places){
-        				    echo "<div class='warning p2'><p>No tienes publicaciones.</p></div>";
+        			 	if (!$places){ 
+        				    echo "<div class='post p2'><p>No tienes publicaciones.</p></div>";
         				}else{ ?>    				
             				<table class="table w100 centered-block">
             					<tr>    					
@@ -84,9 +84,9 @@
                 					<td><?=$place->location?></td>
                 					
                 					<td class="centered">  
-                							<a class="button" href="/Place/edit/<?= $places->id?>">Editar</a> 
+                							<a class="button" href="/Place/edit/<?= $place->id?>">Editar</a> 
                 							                                 
-                                            <a class="button" href="/Place/delete/<?= $places->id ?>">Borrar</a>           
+                                            <a class="button" href="/Place/delete/<?= $place->id ?>">Borrar</a>           
                                        
                                     </td>
                                                                    

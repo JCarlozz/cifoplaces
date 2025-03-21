@@ -20,11 +20,13 @@ class WelcomeController extends Controller{
      * */
     public function index():ViewResponse{
         
-        $places = Place::orderBy('created_at', 'DESC');
+        $places = Place::orderBy('created_at', 'DESC', 3);
         
         return view('welcome',[
             'places'   => $places
         ]);
-    }  
+    } 
+    
+    
 }
 

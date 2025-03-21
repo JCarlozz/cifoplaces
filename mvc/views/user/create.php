@@ -56,7 +56,7 @@
     					<label>Imagen de perfil</label>
     					<input type="file" name="picture" accept="image/*" id="file-with-preview">
     					<br>
-    					
+    					<?php if(Login::isAdmin()) {?>
     					<label>Rol</label>
     					
     					<select name="roles">
@@ -64,20 +64,20 @@
     							<option value="<?=$roleValue ?>"><?=$roleName?></option>
     						<?php } ?>
     					</select>
-    					
+    					<?php } ?>
     						<div class="centered mt3">
     							<input type="submit" class="button" name="guardar" value="Guardar">
     							<input type="reset" class="button" value="Reset">
     						</div>
     					</form>
-    				</div>   
-    		<div class="flex-container">					
-    			<figure class="flex1 centrado">
+    				   
+    							
+    			<figure class="flex4 centrado">
     				<img src="<?=USER_IMAGE_FOLDER.'/'.($user->picture ?? DEFAULT_USER_IMAGE)?>"
     				class="cover" id="preview-image" alt="Previsualización de la imagen de perfil">
     				<figcaption>Previsualización de la imagen de perfil</figcaption>    						
     			</figure>
-    		</div> 
+    		 </div>
     		</section>
     		
     			   				

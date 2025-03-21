@@ -46,7 +46,9 @@
     			</div>
     			<div class="centered">
     				<a class='button' href='/User/create'>Registro</a>
-    				<a href="/Forgotpassword">Olvidé mi clave</a>	
+    			</div>
+    			<div>
+    				<a class="olvide" href="/Forgotpassword">Olvidé mi clave</a>	
     			
     			</div>
     		</form>
