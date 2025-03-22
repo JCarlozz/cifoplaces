@@ -21,12 +21,12 @@
 		<?= $template->header('Lista de usuarios') ?>
 		<?= $template->menu() ?>
 		<?= $template->breadCrumbs([
-		    'Usuarios'=> NULL
+		    'Lista de Usuarios'=> NULL
 		]) ?>
 		<?= $template->messages() ?>
 		
 		<main>
-			<?php// if(Login::role('ROLE_ADMIN')) { ?>
+			
     		<?php if ($users) { ?>
     		
     		<div class="right">
@@ -82,9 +82,7 @@
     						<a class='button' href='/User/show/<?= $user->id ?>'title="Ver">
     							<i class="fas fa-eye"></i></a> -
     						<a class='button' href='/User/edit/<?= $user->id ?>'title="Editar">
-    							<i class="fas fa-edit"></i></a> -
-    						<a class='button' href='/User/delete/<?= $user->id ?>'title="Borrar">
-    							<i class="fas fa-trash-alt"></i></a>
+    							<i class="fas fa-edit"></i></a>
     					</td>
     				</tr>
     			<?php } ?>    			
@@ -100,7 +98,7 @@
     				<a class="button" onclick="history.back()">Atrás</a>
     			</div>
     		
-    		<?php //} ?>
+    		
     		
 		</main>
 		

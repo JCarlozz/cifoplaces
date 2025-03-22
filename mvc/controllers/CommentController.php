@@ -205,4 +205,57 @@ class CommentController extends Controller{
             }
     }
     
+    public function edit(int $id=0){
+        
+        
+        //busca del usuario con ese ID
+        $comment = Comment::findOrFail($id, "No se encontró el comentario indicado.");
+        
+        $user = $comment->belongsTo('User');
+        
+        if(Login::user()->id == $user->id);
+        
+        //retorna una ViewResponse con la vista con la vista con el formulario de edición
+        return view('photo/edit',[
+            'comment'  => $comment,
+            'user'   => $user
+        ]);
+    }
+    
+    public function update(){
+        
+        //Auth::admin();
+        
+        if (!request()->has('actualizar'))      //si no llega el formulario...
+            throw new FormException('No se recibieron datos');
+            
+            $id= intval(request()->post('id'));     //recuperar el ID vía POST
+            
+            $comment= Comment::findOrFail($id, "No se ha encontrado el comentario.");
+            
+            $comment->text            =request()->post('text');
+            
+            $comment->iduser          =intval(user()->iduser);
+            
+            
+            //intenta actualizar el usuario
+            try{
+                $comment->update();
+                
+               
+                Session::success("Actualización el comentario correctamente.");
+                return redirect("/Photo/show/$comment->idphoto");
+                
+                //si se produce un error al guardar el libro...
+            }catch (SQLException $e){
+                
+                Session::error("Hubo errores en la actualización del comentario.");
+                
+                if(DEBUG)
+                    throw new SQLException($e->getMessage());
+                    
+                    return redirect("/Photo/show/$photo->idphoto");
+            }
+    }  
+    
 }

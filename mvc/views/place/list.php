@@ -57,7 +57,7 @@
                     );
                 }?>
                 </div>
-                   <?php  if(Login::user()->id ==  $user->id || Login::isAdmin()){?>  			
+                   <?php  if(Login::user()->id == $user->id && $user->active || Login::isAdmin()){?>  			
         				<a class="button" href="/Place/create/<?=user()->id?>">
         					Nuevo publicación
         				</a>

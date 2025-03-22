@@ -20,14 +20,14 @@
 		<?= $template->header("Edición del lugar $place->name") ?>
 		<?= $template->menu() ?>
 		<?= $template->breadCrumbs([
-		    'place'=>'/place/list',
+		    'Lugares'=>'/place/list',
 		    $place->name=>"/Place/show/$place->id",
 		    'Edición'=>NULL
 		]) ?>
 		<?= $template->messages() ?>
 		
 		<main>
-		<?php  if(Login::user()->id ==  $place->iduser || Login::isAdmin() || Login::oneRole('[ROLE_MODERATOR]')){?>
+		<?php  if(Login::user()->id == $user->id && $user->active || Login::isAdmin() || Login::oneRole('[ROLE_MODERATOR]')){?>
     		<h1><?= APP_NAME ?></h1>
     		<h2>Edición del lugar <?= $place->name?></h2>
     		<section class="flex-container gap2">

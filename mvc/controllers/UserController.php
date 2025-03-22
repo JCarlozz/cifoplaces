@@ -10,7 +10,7 @@
         
         public function list(int $page = 1){
                         
-            //Login::isAdmin();
+            Login::isAdmin();
             
             //analiza si hay filtro
             $filtro = Filter::apply('users');
@@ -50,11 +50,19 @@
             ]);
         }
         
-        public function show(int $id=0){
-            
-            //Auth::admin();
+        public function show(int $id=0){ 
             
             $user = User::findOrFail($id, "No se encontró el usuario.");
+            
+            if (Login::isAdmin() || Login::user()->id == $user->id && $user->active) {
+                
+                echo "Contenido restringido";
+                
+            } else {
+                
+                return redirect("/User/show/".user()->id);
+                
+            }
             
             $places = $user->hasMany('Place');
             
@@ -66,26 +74,27 @@
         
        public function edit(int $id=0){
             
-            //Login::oneRole(["ROLE_USER", "ROLE-ADMIN"]);
+            
             
             //busca del usuario con ese ID
             $user = User::findOrFail($id, "No se encontró el usuario.");
+            
+            if (Login::isAdmin() || Login::user()->id == $user->id && $user->active) {
+                
+                echo "Contenido restringido";
+                
+            } else {
+                
+                return redirect("/User/edit/".user()->id);
+                
+            }
                         
             //retorna una ViewResponse con la vista con la vista con el formulario de edición
             return view('user/edit',[
                 'user'  => $user
             ]);
-        }
+        }        
         
-        public function home(){
-            
-            //Auth::check();
-            
-                       
-            return view('user/home', [
-               'user'=>Login::user()
-            ]);
-        }
         
         public function create(){
             
@@ -114,9 +123,9 @@
                     $user->phone         = request()->post('phone');
                     
                     
-                    $user->addRole('ROLE_USER', $this->request->post('roles'));
+                    $user->addRole('ROLE_USER');
                     
-                    //$user->picture(request()->post('picture') ?? 'DEFAULT_USERS_IMAGE');
+                    
                     
                     try{
                         $user->save();
@@ -133,7 +142,7 @@
                         }
                         
                         Session::success("Nuevo usuario $user->displayname creado con éxito.");
-                        return redirect("/User/home/$user->id");
+                        return redirect("/Place/list/");
                         
                     }catch (ValidationException $e){
                         
@@ -170,7 +179,7 @@
               
               $user= User::findOrFail($id, "No se ha encontrado el usuario.");
               
-              $user->displayname      =request()->post('displayname');
+              $user->displayname           =request()->post('displayname');
               $user->email                 =request()->post('email');
               $user->phone                 =request()->post('phone');
               
@@ -218,7 +227,7 @@
       
       public function delete(int $id = 0){
           
-          //Auth::admin();
+          Auth::check();
           
           $user = User::findOrFail($id, "No existe el usuario.");
           
@@ -229,7 +238,7 @@
       
       public function destroy(){
           
-          //Auth::oneRole(['ROLE_ADMIN']);
+          Auth::check();
           
           //comprueba que llega el formulario de confirmación
           if (!request()->has('borrar'))
@@ -270,7 +279,7 @@
       
       public function addrole(){
           
-          //Auth::admin();
+          Auth::admin();
           
           if(empty(request()->post('add')))
               throw new FormException("No se recibió el formulario");
@@ -300,7 +309,7 @@
       
       public function removerole() {
           
-          //Auth::admin();
+          Auth::admin();
           
           if (empty(request()->post('remove'))) {
               throw new FormException("No se recibió el formulario");
@@ -344,7 +353,7 @@
             
       public function dropcover(){
           
-          //Auth::admin();
+          
           
           if (!request()->has('borrar'))
               throw new FormException('Faltan datos para completar la operación');
@@ -387,14 +396,7 @@
           
           //esta operación solamente la puedes hacer el administrador, si el usuario
           //no tiene permiso para hacerla, retornaremos una JsonResponse de error
-          if(!Login::isAdmin()){
-              return new JsonResponse(
-                  ['status' => 'ERROR'],        //array con los datos
-                  'Operación no autorizada',    //mensaje adicional
-                  401,                          //código HTTP
-                  'NOT AUTHORIZED'              //mensaje HTTP
-                  );
-          }
+          
           
           //recupera el susuario con ese email
           $user = User::whereExactMatch(['email' => $email]);
@@ -410,14 +412,7 @@
           
           //esta operación solamente la puedes hacer el administrador, si el usuario
           //no tiene permiso para hacerla, retornaremos una JsonResponse de error
-          if(!Login::isAdmin()){
-              return new JsonResponse(
-                  ['status' => 'ERROR'],        //array con los datos
-                  'Operación no autorizada',    //mensaje adicional
-                  401,                          //código HTTP
-                  'NOT AUTHORIZED'              //mensaje HTTP
-                  );
-          }
+         
           
           //recupera el susuario con ese email
           $user = User::whereExactMatch(['phone' => $phone]);

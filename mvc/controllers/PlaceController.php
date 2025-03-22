@@ -61,7 +61,7 @@ class PlaceController extends Controller{
     
     public function create(){
         
-        //Auth::check();
+        Auth::check();
         
         
         return view('place/create', [
@@ -73,7 +73,7 @@ class PlaceController extends Controller{
     
     public function store(){
         
-        //Auth::role('ROLE_LIBRARIAN');
+        Auth::check();
         
         //comprueba que la petición venga del formulario
         if (!request()->has('guardar'))
@@ -161,10 +161,13 @@ class PlaceController extends Controller{
     
     public function edit(int $id=0){
         
-        //Auth::role('ROLE_LIBRARIAN');
         
         //busca el libro con ese ID
         $place = Place::findOrFail($id, "No se encontró el lugar.");
+        
+        $user = $place->belongsTo('User');
+        
+        if(Login::user()->id == $user->id && $user->active);
         
         //retorna una ViewResponse con la vista con la vista con el formulario de edición
         return view('place/edit',[
@@ -174,7 +177,6 @@ class PlaceController extends Controller{
     
     public function update(){
         
-        //Auth::role('ROLE_LIBRARIAN');
         
         if (!request()->has('actualizar'))      //si no llega el formulario...
             throw new FormException('No se recibieron datos');
@@ -235,19 +237,23 @@ class PlaceController extends Controller{
     }
     
     public function delete(int $id = 0){
-        
-        //Auth::role('ROLE_LIBRARIAN');
+                
         
         $place = Place::findOrFail($id, "No existe el lugar.");
         
+        $user = $place->belongsTo('User');
+        
+        if(Login::user()->id == $user->id && $user->active);
+        
         return view('place/delete', [
-            'place' =>$place
+            'place' =>$place,
+            'user'  =>$user
         ]);
     }
     
     public function destroy(){
         
-        //Auth::role('ROLE_LIBRARIAN');
+        if(Login::user()->id == $user->id && $user->active);
         
         //comprueba que llega el formulario de confirmación
         if (!request()->has('borrar'))
@@ -268,7 +274,7 @@ class PlaceController extends Controller{
                     
                     
                     Session::success("Se ha borrado el lugar $place->name.");
-                    return view("/Place/show/$place->id");
+                    return redirect("/Place/list");
                     
             }catch (SQLException $e){
                 

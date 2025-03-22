@@ -27,7 +27,7 @@
 		<?= $template->messages() ?>
 		
 		<main>
-			<?php  if(Login::user()->id ==  $user->id || Login::isAdmin() ){?>
+			<?php  if(Login::user()->id == $user->id && $user->active || Login::isAdmin() ){?>
 			<?php } else {
                     echo "<script>alert('No tienes permisos para acceder a esta página.'); window.location.href='/';</script>";
                     exit();}?>	
@@ -57,8 +57,7 @@
     			<br>
     			<label>Hora</label>
     			<input type="time" name="time" value="<?= old('time', $photo->time)?>"> 		
-    			
-    			   			
+    			<br>    			   			
     			<label>Imagen de perfil</label>
     			<input type="file" name="file" accept="image/*" id="file-with-preview">
     			<br>    			

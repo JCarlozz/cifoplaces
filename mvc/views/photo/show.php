@@ -20,18 +20,22 @@
 		<?= $template->header('Foto') ?>
 		<?= $template->menu() ?>
 		<?= $template->breadCrumbs([
-		    'Lugar'=> '/Place/show/$id',
-		    $photo->name =>NULL
+		    'Lugares'=>'/Place/list/',
+		    $place->name=>"/Place/show/".$place->id,
+		    $photo->name=NULL
 		]) ?>
 		<?= $template->messages() ?>
 		
 		<main>
 		
 		
-    		<h1><?= APP_NAME ?></h1> 
+    		<h1><?= APP_NAME ?></h1>
+    		
+    		<?php  if(Login::user()->id ==  $user->id && $user->active) {?>
     		<div>
-    			<a class="button" href="/Photo/edit/<?= $photo->id ?>">Editar</a> 
-    		</div>   		
+    			<a class="button" href="/Photo/edit/<?= $photo->id ?>">Editar</a>    			
+    		</div> 
+    		<?php }?> 		
     		
     		<section id="detalles" class="flex-container gap2">
     			<div class="flex2">
@@ -43,6 +47,12 @@
     			<p><b>Descripción:</b>	<?=$photo->description?></p>
     			<p><b>Data:</b>			<?=$photo->date?></p>
     			<p><b>Hora:</b>			<?=$photo->time?>
+    			<form method="POST" action="/Photo/destroy" class="no-border">
+        			<input type="hidden" name="iduser" value="<?=$photo->iduser?>">
+        			<input type="hidden" name="id" value="<?=$photo->id?>">
+        			<input type="submit" class="button" name="borrar" value="Borrar lugar">
+        		</form>
+   
     			    			
     			
     			</div>
@@ -51,12 +61,12 @@
         				class="cover enlarge-image" alt="Foto del usuario <?=$photo->alt?>">    					
         			<figcaption>Foto <?="$photo->name"?></figcaption>
         			
-        			<?php  if(Login::user()->id ==  $photo->iduser){?>
+        			<?php  if(Login::user()->id ==  $user->id){?>
         			<?php if($photo->file) {?>
         			
         			
         			<form method="POST" action="/Photo/dropcover" class="no-border">
-        				<input type="hidden" name="id" value="<?=$photo->id?>">
+        				<input type="hidden" name="iduser" value="<?=$photo->iduser?>">
         				<input type="hidden" name="id" value="<?=$photo->id?>">
         				<input type="submit" class="button-danger" name="borrar" value="Eliminar foto">
         			</form>
@@ -81,7 +91,7 @@
                                     <p class="comment-date"><?= $comment->created_at ?></p>
                                     
                                 </div>
-                                <?php  if(Login::user()->id ==  $comment->iduser || Login::isAdmin() ){?>
+                                <?php  if(Login::user()->id ==  $comment->iduser && user()->active || Login::isAdmin() ){?>
                                 <div class="comment-actions">
                                     <form method="POST" action="/Comment/destroy">
                                     	<input type="hidden" name="iduser" value="<?= user()->id ?>">
@@ -96,7 +106,7 @@
                 <?php } else { ?>
                     <p class="no-comments">No hay comentarios aún. ¡Sé el primero en comentar!</p>
                 <?php } ?>
-            	<?php  if(Login::user()->id ==  $photo->iduser){?>
+            	<?php  if(Login::check()){?>
                 <form method="POST" action="/Comment/storephoto" class="comment-form">
                     <textarea name="text" placeholder="Escribe aquí tu comentario"></textarea>
                     <input type="hidden" name="iduser" value="<?= user()->id ?>">

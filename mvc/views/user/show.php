@@ -20,8 +20,7 @@
 		<?= $template->header('Perfil usuario') ?>
 		<?= $template->menu() ?>
 		<?= $template->breadCrumbs([
-		    'Usuarios'=> '/user',
-		    $user->nombreyapellidos =>NULL
+		    'Home'=> NULL
 		]) ?>
 		<?= $template->messages() ?>
 		
@@ -29,10 +28,10 @@
 		
 		
     		<h1><?= APP_NAME ?></h1>
-    		
     		<a class="button" href="/User/edit/<?= $user->id?>">Editar</a>
+    		<?php if(Login::user()->id == $user->id && $user->active) {?>
     		<a class="button" href="/User/delete/<?= $user->id?>">Darme de baja</a>
-    		
+    		<?php }?>
     		<section id="detalles" class="flex-container gap2">
     			<div class="flex2">
     			<h2><?=$user->displayname?></h2>
@@ -44,9 +43,9 @@
     			<p><b>Email:</b>		<?=$user->email?></p>
     			<p><b>Teléfono:</b>		<?=$user->phone?></p>    			
     			
-    			
+    			<?php if(Login::isAdmin()) {?>
     			<p><b>Roles:</b> 		<?= implode(', ', $user->roles) ?></p>
-    			
+    			<?php }?>
     			
     			</div>
     			<figure class="flex1 centrado p2">
@@ -64,7 +63,7 @@
         		<section>
         									
         			 <h2>Publicaciones de <?= $user->displayname?></h2>
-        				<?php  if(Login::user()->id ==  $user->id ){?>  			
+        				<?php  if(Login::user()->id == $user->id && $user->active) {?>  			
         				<a class="button" href="/Place/create/<?=user()->id?>">
         					Nuevo publicación
         				</a>

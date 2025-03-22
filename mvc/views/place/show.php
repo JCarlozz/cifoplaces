@@ -27,7 +27,7 @@
 		
 		<main>
     		<h1><?= APP_NAME ?></h1>
-    		<?php  if(Login::user()->id ==  $place->iduser || Login::isAdmin() ){?>
+    		<?php  if(Login::user()->id ==  $place->iduser && user()->active || Login::isAdmin() ){?>
     		<a class="button" href="/Place/edit/<?=$place->id?>">Editar lugar</a>
     		<?php } ?>			
     				
@@ -88,12 +88,12 @@
                                     <img src="<?= USER_IMAGE_FOLDER . '/' . ($comment->userpicture ?? DEFAULT_USER_IMAGE) ?>" alt="Imagen de <?= $user->displayname ?>">
                                 </figure>
                                 <div class="comment-content">
-                                    <p class="comment-author"><?= user()->displayname ?></p>
+                                    <p class="comment-author"><?= $comment->username ?></p>
                                     <p class="comment-text"><?= $comment->text ?></p>
                                     <p class="comment-date"><?= $comment->created_at ?></p>
                                     
                                 </div>
-                                <?php  if(Login::user()->id ==  $comment->iduser || Login::isAdmin() ){?>
+                                <?php  if(Login::user()->id ==  $comment->iduser && user()->active || Login::isAdmin() ){?>
                                 <div class="comment-actions">
                                     <form method="POST" action="/Comment/destroyplace">
                                     	<input type="hidden" name="iduser" value="<?= user()->id ?>">

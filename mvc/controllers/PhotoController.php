@@ -10,26 +10,32 @@ class PhotoController extends Controller{
         
         $comments = $photo->hasMany('V_comment');
         
-        
+        $place = $photo->belongsTo('Place');       
         
         $user= $photo->belongsTo('User');
         
         return view('photo/show',[
             'photo'     => $photo,
-            'comments'  => $comments
+            'comments'  => $comments,
+            'user'      => $user,
+            'place'     => $place
         ]);
     }
     
     public function edit(int $id=0){
         
-        //Login::oneRole(["ROLE_USER", "ROLE-ADMIN"]);
         
         //busca del usuario con ese ID
         $photo = Photo::findOrFail($id, "No se encontró la foto indicada.");
         
+        $user = $photo->belongsTo('User');        
+        
+        if(Login::user()->id == $user->id && $user->active);
+        
         //retorna una ViewResponse con la vista con la vista con el formulario de edición
         return view('photo/edit',[
-            'photo'  => $photo
+            'photo'  => $photo,
+            'user'   => $user
         ]);
     }
     
@@ -105,10 +111,7 @@ class PhotoController extends Controller{
         ]);
     }
     
-    public function store(){
-        
-        //Auth::admin();
-        
+    public function store(){        
         
         
         if(!request()->has('guardar'))
@@ -162,39 +165,54 @@ class PhotoController extends Controller{
                         return redirect("Photo/edit/$photo->id");
                         
                 }
-    }    
+    }   
+    
+    public function delete(int $id = 0){
+        
+        //Auth::admin();
+        
+        $photo = Photo::findOrFail($id, "No existe la foto.");
+        
+        $user = $photo->belonsTo('User');
+        
+        if(Login::user()->id == $user->id && $user->active);
+        
+        return view('photo/delete', [
+            'photo'=>$photo
+        ]);
+    }
         
     
     
     public function destroy(){
         
-        //Auth::oneRole(['ROLE_ADMIN']);
+        if(Login::user()->id == $user->id && $user->active || Login::isAdmin());
         
         //comprueba que llega el formulario de confirmación
         if (!request()->has('borrar'))
             throw new FormException('No se recibió la confirmación.');
             
             $id = intval(request()->post('id'));        //recupera el identificador
-            $user = User::findOrFail($id);            //recupera el socio
+            $photo = Photo::findOrFail($id);            //recupera el socio
             
             try{
-                $user->deleteObject();
+                $photo->deleteObject();
                 
-                if ($user->picture)
-                    File::remove('../public/'.USERS_IMAGE_FOLDER.'/'.$user->picture, true);
+                if ($photo->file)
+                    File::remove('../public/'.FOTO_IMAGE_FOLDER.'/'.$photo->file, true);
                     
                     
-                    Session::success("Se ha borrado de el usuario $user->displayname.");
-                    return view("/User/list");
+                    Session::success("Se ha borrado de el usuario $photo->name.");
+                    return view("/Place/show/$id");
                     
             }catch (SQLException $e){
                 
-                Session::error("No se pudo borrar el usuario $user->displayname.");
+                Session::error("No se pudo borrar el usuario $photo->name.");
                 
                 if (DEBUG)
                     throw new SQLException($e->getMessage());
                     
-                    return redirect("/User/delete/$id");
+                    return redirect("/Photo/delete/$id");
                     
             }catch (FileException $e){
                 Session::warning("Se eliminó el usuario pero no se pudo eliminar el fichero del disco.");
@@ -202,7 +220,7 @@ class PhotoController extends Controller{
                 if (DEBUG)
                     throw new FileException($e->getMessage());
                     
-                    return redirect("/User");
+                    return redirect("/Place/list");
                     
             }
     }
@@ -210,24 +228,24 @@ class PhotoController extends Controller{
     
     public function dropcover(){
         
-        //Auth::admin();
+        if(Login::user()->id == $user->id && $user->active || Login::isAdmin());
         
         if (!request()->has('borrar'))
             throw new FormException('Faltan datos para completar la operación');
             
             
             $id = request()->post('id');
-            $user = User::findOrFail($id, "No se ha encontrado el usuario.");
+            $photo = Photo::findOrFail($id, "No se ha encontrado la foto.");
             
-            $tmp = $user->picture;
-            $user->picture = NULL;
+            $tmp = $photo->file;
+            $photo->file = NULL;
             
             try{
-                $user->update();
-                File::remove('../public/'.USER_IMAGE_FOLDER.'/'.$tmp, true);
+                $photo->update();
+                File::remove('../public/'.FOTO_IMAGE_FOLDER.'/'.$tmp, true);
                 
-                Session::success("Borrado de la foto del $user->displayname realizada.");
-                return redirect("/User/edit/$id");
+                Session::success("Borrado de la foto del $photo->name realizada.");
+                return redirect("/Photo/show/$id");
                 
             }catch (SQLException $e){
                 Session::error("No se pudo eliminar la portada");
@@ -235,7 +253,7 @@ class PhotoController extends Controller{
                 if (DEBUG)
                     throw new SQLException($e->getMessage());
                     
-                    return redirect("/User/edit/$id");
+                    return redirect("/Photo/show/$id");
                     
             }catch (FileException $e){
                 Session::warning("No se pudo eliminar el fichero del disco");
@@ -243,7 +261,7 @@ class PhotoController extends Controller{
                 if (DEBUG)
                     throw new FileException($e->getMessage());
                     
-                    return redirect("/User/edit/$user->id");
+                    return redirect("//Photo/show/$id");
                     
             }
             
