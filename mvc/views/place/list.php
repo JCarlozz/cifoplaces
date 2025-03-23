@@ -57,11 +57,7 @@
                     );
                 }?>
                 </div>
-                   <?php  if(Login::user()->id == $user->id || Login::isAdmin()){?>  			
-        				<a class="button" href="/Place/create/<?=user()->id?>">
-        					Nuevo publicación
-        				</a>
-        			<?php } ?>                 
+                                    
                 <section class="flex-container-galeria">                    
                    <?php foreach ($places as $place) { ?>
 						<div class="flex-item">

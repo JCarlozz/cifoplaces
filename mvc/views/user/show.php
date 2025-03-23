@@ -65,7 +65,7 @@
         			 <h2>Publicaciones de <?= $user->displayname?></h2>
         				<?php  if(Login::user()->id == $user->id) {?>  			
         				<a class="button" href="/Place/create/<?=user()->id?>">
-        					Nuevo publicación
+        					Nueva publicación
         				</a>
         				<?php } ?> 
         				<?php 

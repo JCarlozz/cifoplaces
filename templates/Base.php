@@ -458,26 +458,26 @@ class Base implements TemplateInterface{
         <footer class='flex-container left drop-shadow'>
             
             <div class='flex4 p2'>
-                <p><a class='negrita maxi cursiva' href='https://github.com/robertsallent/fastlight'>FastLight Framework</a></p>
+                <p><a class='negrita maxi cursiva' href='https://github.com>FastLight Framework</a></p>
                 <p>
                     Desarrollado por <a href='https://robertsallent.com'>
-                    Robert Sallent</a> para sus cursos de desarrollo de aplicaciones web (2022/2025).
+                    Carlos Carceller para el curso de desarrollo de aplicaciones web (2024/2025).
                 </p>
             </div>
 
             <div class='flex1 p1 m1 mt3 right'>
                 <figure class='p1 centrada drop-shadow'>
-                    <a href='https://robertsallent.com' rel='author'>
-                        <img class='w100' src='/images/template/logo.png' alt='Robert Sallent'>
+                    <a href='https://www.facebook.com/?locale=es_ES'>
+                        <img class='w100' src='/images/template/logo.png' alt='Facebook'>
                     </a>
                 </figure>
                 <figure class='p1 centrada drop-shadow'>
-                    <a href='https://www.linkedin.com/in/robert-sallent-l%C3%B3pez-4187a866'>
+                    <a href='https://www.linkedin.com'>
                         <img class='w100' src='/images/template/linkedin.png' alt='LinkedIn'>
                     </a>
                 </figure>
                 <figure class='p1 centrada drop-shadow'>
-                    <a href='https://github.com/robertsallent'>
+                    <a href='https://github.com'>
                         <img class='w100' src='/images/template/github.png' alt='GitHub'>
                     </a>
                 </figure>

@@ -16,6 +16,7 @@ CREATE TABLE users(
 	phone VARCHAR(32) NOT NULL UNIQUE KEY,
 	password VARCHAR(255) NOT NULL,
 	roles VARCHAR(1024) NOT NULL DEFAULT '["ROLE_USER"]',
+	templates VARCHAR(1024) NOT NULL DEFAULT '["BASE"]',
 	picture VARCHAR(256) DEFAULT NULL,
 	created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	updated_at TIMESTAMP NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
@@ -23,11 +24,11 @@ CREATE TABLE users(
 
 
 -- algunos usuarios para las pruebas, podéis crear tantos como necesitéis
-INSERT INTO users(id, displayname, email, phone, password, roles) VALUES 
-	(1, 'admin', 'admin@fastlight.org', '666666661', md5('1234'), '["ROLE_USER", "ROLE_ADMIN"]'),
-	(2, 'test', 'test@fastlight.org', '666666663', md5('1234'), '["ROLE_USER", "ROLE_TEST"]'),
-	(3, 'user', 'user@fastlight.org', '666666666', md5('1234'), '["ROLE_USER"]'),
-	(4, 'moderator', 'moderator@fastlight.org', '666666667', md5('1234'), '["ROLE_USER", "ROLE_MODERATOR"]');
+INSERT INTO users(id, displayname, email, phone, password, roles, templates) VALUES 
+	(1, 'admin', 'admin@fastlight.org', '666666661', md5('1234'), '["ROLE_USER", "ROLE_ADMIN"]', '["BASE"]'),
+	(2, 'test', 'test@fastlight.org', '666666663', md5('1234'), '["ROLE_USER", "ROLE_TEST"]', '["BASE"]'),
+	(3, 'user', 'user@fastlight.org', '666666666', md5('1234'), '["ROLE_USER"]', '["BASE"]'),
+	(4, 'moderator', 'moderator@fastlight.org', '666666667', md5('1234'), '["ROLE_USER", "ROLE_MODERATOR"]', '["BASE"]');
 
 -- tabla errors
 -- por si queremos registrar los errores en base de datos.

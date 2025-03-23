@@ -126,7 +126,6 @@
                     $user->addRole('ROLE_USER');
                     
                     
-                    
                     try{
                         $user->save();
                         
@@ -305,6 +304,32 @@
                       
                       return redirect("/User/edit/$id");
               }
+      }
+      
+      public function addTemplate() {
+          if (!Login::check()) {
+              throw new Exception("No tienes permiso para cambiar el template.");
+          }
+          
+          $template = request()->post('template');
+          
+          // Validar que el template seleccionado esté en la lista permitida
+          if (!in_array($template, TEMPLATE)) {
+              throw new Exception("Template no válido.");
+          }
+          
+          // Obtener el usuario actual
+          $user = Login::user();
+          
+          $user->template = $template;
+          
+          $user->update();
+          
+          // Guardar el template en la sesión
+          Session::set('template', $template);
+          
+          Session::success("Se cambió el template a $template.");
+          return redirect("/User/show/$user->id");
       }
       
       public function removerole() {

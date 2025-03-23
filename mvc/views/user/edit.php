@@ -46,8 +46,15 @@
         			<br>
         			<label>Teléfono</label>
         			<input type="text" name="phone" value="<?=old('phone', $user->phone)?>">
-        			<br> 
-        				
+        			<br>
+        			<label>Template</label>
+                        <select name="template">
+                            <option value="BASE" <?= old('template', 'BASE') ?>>Base</option>
+                            <option value="DARK" <?= old('template', 'DARK') ?>>Dark</option>
+                            <option value="NEON" <?= old('template', 'NEON') ?>>Neon</option>
+                            <option value="RETRO" <?= old('template', 'RETRO') ?>>Retro</option>
+                        </select>
+        			<br>	
         			<label>Imagen de perfil</label>
         			<input type="file" name="picture" accept="image/*" id="file-with-preview">
         			<br>    			

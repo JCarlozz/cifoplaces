@@ -106,9 +106,23 @@
 /* ==================================  CLASES  ============================== */
 /* Columnas con FLEX -------------------------------------------------------- */
 
-.flex-container{
-	display: flex;
-	flex-wrap: wrap;
+.flex-container {
+    display: flex;
+    align-items: center; /* Alinea verticalmente */
+    justify-content: space-between; /* Separa texto e imagen */
+    gap: 20px; /* Espacio entre ellos */
+}
+
+.contenido {
+    flex: 1; /* El texto ocupa el espacio disponible */
+    max-width: 60%; /* Limita el ancho para que no se alargue demasiado */
+}
+
+.imagen img {
+    max-width: 35%; /* Ajusta el tamaño de la imagen */
+    height: auto;
+    border-radius: 10px; /* Opcional: bordes redondeados */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Opcional: sombra */
 }
 
 .flex-container>section, .flex-container>div, .flex-container>figure{
@@ -543,23 +557,17 @@ img.text-top	{ vertical-align: text-top }
 }
 
 .flex-item {
-	
+	width: 400px;
+	height: auto;
 	display: flex;
     justify-content: center; /* Centra horizontalmente */
     align-items: center; /* Centra verticalmente */
-    overflow: hidden;
-    /*border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);*/
+    overflow: hidden;    
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     position: relative;
     height: 15rem;
 }
 
-
-.flex-item:hover {
-    transform: scale(1.); /* Efecto de zoom al pasar el ratón */
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.8);
-}
 
 .flex-item img {
     max-width: 100%; /* Asegura que la imagen no se desborde */
@@ -575,7 +583,7 @@ img.text-top	{ vertical-align: text-top }
     heigth: 50rem;
     /*width: 25rem;*/
     overflow: hidden;
-    border-radius: 8px;
+    
     /*box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);*/
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     position: relative;

@@ -47,6 +47,44 @@
                         </div>
                     <?php } ?>
                 </section>
+                
+                <section class="flex-container">
+                	<div class="contenido">
+                	<h1>Comparte</h1>
+                	
+                	<p>Compartir imágenes en CifoPlaces es una forma maravillosa de capturar y transmitir la 
+                	esencia de los lugares que visitamos. A través de cada foto, los usuarios pueden mostrar 
+                	rincones especiales, detalles únicos y momentos inolvidables que inspiran a otros a explorar 
+                	y descubrir. Es una manera de conectar con la comunidad, revivir recuerdos y enriquecer la 
+                	experiencia de quienes buscan nuevos destinos. Además, cada imagen contribuye a crear un mapa 
+                	visual lleno de historias, colores y emociones, convirtiendo CifoPlaces en un espacio vivo 
+                	donde la belleza de cada lugar cobra vida. 📸✨</p>
+                	</div>
+                    <div class="images centrado">
+                    	<img class="flex-item"  src="/images/template/compartir.jpg" alt="Portada de compartir">
+                   	</div>
+                </section>
+                
+                <section class="flex-container">           	
+                   	<div class="flex1 centrado">
+                    	<img class="flex-item"  src="/images/template/amigos.jpg" alt="Portada de compartir">
+                   	</div>
+                   	
+                	<div class="contenido">
+                	<h1>Comunidad, ideas....</h1>
+                	
+                	<p>CifoPlaces nace con la intención de crear una comunidad vibrante donde los usuarios puedan 
+                	compartir sus experiencias, ideas y viajes. Más que una simple plataforma, es un espacio para 
+                	conectar con otros apasionados por la exploración, descubrir nuevos destinos y recomendar 
+                	lugares únicos. Aquí, cada imagen, comentario y recomendación contribuye a enriquecer la 
+                	experiencia de todos, fomentando el intercambio de conocimientos y aventuras. Ya sea para 
+                	inspirar a otros, encontrar compañeros de viaje o simplemente compartir recuerdos, CifoPlaces 
+                	es el punto de encuentro perfecto para quienes disfrutan descubriendo el mundo juntos. 🌍✨</p>
+                	</div>
+                	
+                	
+                    
+                </section>
     		
         			    
 		       

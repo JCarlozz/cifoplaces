@@ -134,7 +134,7 @@ define('USER_ROLES', [
     'Usuario'       => 'ROLE_USER',
     'Administrador' => 'ROLE_ADMIN',
     'Test'          => 'ROLE_TEST',
-    'Moderator'          => 'ROLE_MODERATOR',
+    'Moderator'     => 'ROLE_MODERATOR',
     'Bloqueado'     => 'ROLE_BLOCKED'
 ]);
 
