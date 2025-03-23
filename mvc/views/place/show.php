@@ -27,7 +27,7 @@
 		
 		<main>
     		<h1><?= APP_NAME ?></h1>
-    		<?php  if(Login::user()->id ==  $place->iduser && user()->active || Login::isAdmin() ){?>
+    		<?php  if(Login::user()->id ==  $place->iduser || Login::isAdmin() ){?>
     		<a class="button" href="/Place/edit/<?=$place->id?>">Editar lugar</a>
     		<?php } ?>			
     				
@@ -93,7 +93,7 @@
                                     <p class="comment-date"><?= $comment->created_at ?></p>
                                     
                                 </div>
-                                <?php  if(Login::user()->id ==  $comment->iduser && user()->active || Login::isAdmin() ){?>
+                                <?php  if(Login::user()->id ==  $comment->iduser || Login::isAdmin() ){?>
                                 <div class="comment-actions">
                                     <form method="POST" action="/Comment/destroyplace">
                                     	<input type="hidden" name="iduser" value="<?= user()->id ?>">

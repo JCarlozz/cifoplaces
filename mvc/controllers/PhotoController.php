@@ -30,7 +30,7 @@ class PhotoController extends Controller{
         
         $user = $photo->belongsTo('User');        
         
-        if(Login::user()->id == $user->id && $user->active);
+        if(Login::user()->id == $user->id);
         
         //retorna una ViewResponse con la vista con la vista con el formulario de edición
         return view('photo/edit',[
@@ -175,7 +175,7 @@ class PhotoController extends Controller{
         
         $user = $photo->belonsTo('User');
         
-        if(Login::user()->id == $user->id && $user->active);
+        if(Login::user()->id == $user->id);
         
         return view('photo/delete', [
             'photo'=>$photo
@@ -186,7 +186,7 @@ class PhotoController extends Controller{
     
     public function destroy(){
         
-        if(Login::user()->id == $user->id && $user->active || Login::isAdmin());
+        if(Login::user()->id == $user->id || Login::isAdmin());
         
         //comprueba que llega el formulario de confirmación
         if (!request()->has('borrar'))
@@ -228,7 +228,7 @@ class PhotoController extends Controller{
     
     public function dropcover(){
         
-        if(Login::user()->id == $user->id && $user->active || Login::isAdmin());
+        if(Login::user()->id == $user->id || Login::isAdmin());
         
         if (!request()->has('borrar'))
             throw new FormException('Faltan datos para completar la operación');

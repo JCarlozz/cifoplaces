@@ -54,9 +54,9 @@
             
             $user = User::findOrFail($id, "No se encontró el usuario.");
             
-            if (Login::isAdmin() || Login::user()->id == $user->id && $user->active) {
+            if (Login::user()->id == $user->id ||  Login::isAdmin()) {
                 
-                echo "Contenido restringido";
+                echo "";
                 
             } else {
                 
@@ -79,7 +79,7 @@
             //busca del usuario con ese ID
             $user = User::findOrFail($id, "No se encontró el usuario.");
             
-            if (Login::isAdmin() || Login::user()->id == $user->id && $user->active) {
+            if (Login::isAdmin() || Login::user()->id == $user->id) {
                 
                 echo "Contenido restringido";
                 

@@ -27,10 +27,10 @@
 		<?= $template->messages() ?>
 		
 		<main>
-		<?php  if(Login::user()->id == $user->id && $user->active || Login::isAdmin() || Login::oneRole('[ROLE_MODERATOR]')){?>
+			<?php if(Login::user()->id == $user->id || Login::isAdmin()) {?>
     		<h1><?= APP_NAME ?></h1>
     		<h2>Edición del lugar <?= $place->name?></h2>
-    		<section class="flex-container gap2">
+    		<section class="flex-container gap2"> 
     		
     		<form method="POST" action="/Place/update" class="flex2 no-border" enctype="multipart/form-data">
 			
@@ -84,7 +84,7 @@
 				<a class="button" onclick="history.back()">Atrás</a>
 				<a class="button" href="/Place/list">Lista de lugares</a>
 			</div>
-			<?php } ?>    		
+			<?php }?>	
 		</main>
 		<?= $template->footer() ?>
 		<?= $template->version() ?>		

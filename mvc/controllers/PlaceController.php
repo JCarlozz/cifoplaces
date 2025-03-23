@@ -167,11 +167,12 @@ class PlaceController extends Controller{
         
         $user = $place->belongsTo('User');
         
-        if(Login::user()->id == $user->id && $user->active);
+        if(Login::user()->id == $user->id || Login::isAdmin());
         
         //retorna una ViewResponse con la vista con la vista con el formulario de edición
         return view('place/edit',[
-            'place'=> $place
+            'place' => $place,
+            'user'  => $user
         ]);
     }
     
@@ -243,7 +244,7 @@ class PlaceController extends Controller{
         
         $user = $place->belongsTo('User');
         
-        if(Login::user()->id == $user->id && $user->active);
+        if(Login::user()->id == $user->id);
         
         return view('place/delete', [
             'place' =>$place,
@@ -253,7 +254,7 @@ class PlaceController extends Controller{
     
     public function destroy(){
         
-        if(Login::user()->id == $user->id && $user->active);
+        if(Login::user()->id == $user->id);
         
         //comprueba que llega el formulario de confirmación
         if (!request()->has('borrar'))

@@ -362,7 +362,7 @@ span.path::before{
 	color: white;
 	font: caption;
 	font-size: 1.05em;
-	padding: 8px 20px;
+	padding: 4px 10px;
 	margin: 4px;
 	border: none;
 	border-radius: 3px;
@@ -375,7 +375,7 @@ span.path::before{
 }
 
 .button{
-	background:#404040;
+	background:rgb(145, 145, 145);
 }
 
 .button:hover{
@@ -423,17 +423,20 @@ span.path::before{
 }
 
 .table th{
-	font-family: helvetica;
+	
 	color: var(--th-font-color);
 	text-shadow: 2px 2px 2px var(--text-shadow);
-	background-color: #404040;
+	background-color: #555555;
 	padding: 10px;
 	font-size: 1.1rem;
 	text-align: left;
 }
 
 .table td, .table th{
-	border-radius: 2px;
+	box-shadow:0.1px 0.1px 0.3px rgba(0, 0, 0, 0.3);
+  	padding: 10px;
+ 	background-color: #fdfdfd;
+ 	color: #404040;
 }
 
 .table tr:nth-of-type(odd){
@@ -441,7 +444,7 @@ span.path::before{
 }
 
 .table tr:nth-of-type(even){
-	background-color: var(--td-even-bg-color);
+	s
 }
 
 .table tr, table td{

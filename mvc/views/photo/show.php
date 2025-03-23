@@ -22,7 +22,7 @@
 		<?= $template->breadCrumbs([
 		    'Lugares'=>'/Place/list/',
 		    $place->name=>"/Place/show/".$place->id,
-		    $photo->name=NULL
+		    $photo->name=>NULL
 		]) ?>
 		<?= $template->messages() ?>
 		
@@ -31,7 +31,7 @@
 		
     		<h1><?= APP_NAME ?></h1>
     		
-    		<?php  if(Login::user()->id ==  $user->id && $user->active) {?>
+    		<?php  if(Login::user()->id ==  $user->id) {?>
     		<div>
     			<a class="button" href="/Photo/edit/<?= $photo->id ?>">Editar</a>    			
     		</div> 
@@ -47,12 +47,14 @@
     			<p><b>Descripción:</b>	<?=$photo->description?></p>
     			<p><b>Data:</b>			<?=$photo->date?></p>
     			<p><b>Hora:</b>			<?=$photo->time?>
+    		
+    			<?php  if(Login::user()->id ==  $photo->iduser || Login::user()->id == $place->iduser || Login::isAdmin() ){?>
     			<form method="POST" action="/Photo/destroy" class="no-border">
         			<input type="hidden" name="iduser" value="<?=$photo->iduser?>">
         			<input type="hidden" name="id" value="<?=$photo->id?>">
         			<input type="submit" class="button" name="borrar" value="Borrar lugar">
         		</form>
-   
+   				<?php }?>
     			    			
     			
     			</div>
@@ -91,7 +93,7 @@
                                     <p class="comment-date"><?= $comment->created_at ?></p>
                                     
                                 </div>
-                                <?php  if(Login::user()->id ==  $comment->iduser && user()->active || Login::isAdmin() ){?>
+                                <?php  if(Login::user()->id ==  $comment->iduser || Login::isAdmin() ){?>
                                 <div class="comment-actions">
                                     <form method="POST" action="/Comment/destroy">
                                     	<input type="hidden" name="iduser" value="<?= user()->id ?>">

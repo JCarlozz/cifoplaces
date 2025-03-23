@@ -29,7 +29,7 @@
 		
     		<h1><?= APP_NAME ?></h1>
     		<a class="button" href="/User/edit/<?= $user->id?>">Editar</a>
-    		<?php if(Login::user()->id == $user->id && $user->active) {?>
+    		<?php if(Login::user()->id == $user->id) {?>
     		<a class="button" href="/User/delete/<?= $user->id?>">Darme de baja</a>
     		<?php }?>
     		<section id="detalles" class="flex-container gap2">
@@ -63,7 +63,7 @@
         		<section>
         									
         			 <h2>Publicaciones de <?= $user->displayname?></h2>
-        				<?php  if(Login::user()->id == $user->id && $user->active) {?>  			
+        				<?php  if(Login::user()->id == $user->id) {?>  			
         				<a class="button" href="/Place/create/<?=user()->id?>">
         					Nuevo publicación
         				</a>
@@ -82,7 +82,9 @@
                 					<td><?=$place->type?></td>
                 					<td><?=$place->location?></td>
                 					
-                					<td class="centered">  
+                					<td class="centered">
+                							<a class="button" href="/Place/show/<?= $place->id?>">Ver</a> 
+                					  
                 							<a class="button" href="/Place/edit/<?= $place->id?>">Editar</a> 
                 							                                 
                                             <a class="button" href="/Place/delete/<?= $place->id ?>">Borrar</a>           
