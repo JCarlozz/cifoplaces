@@ -1,5 +1,5 @@
 <?php
-
+#[\AllowDynamicProperties]
 /**
  * Model
  * 
