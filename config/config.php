@@ -117,8 +117,8 @@ define('RESPONSE_CHARSET', 'utf-8'); // charset para las respuestas HTTP
 define('DB_CLASS','DBMysqli');     // Clase a usar, puede ser DBMysqli (mysqli) o DBPDO (PDO).
 define('SGDB','mysql');         // Driver que debe usar PDO (solamente para PDO).
 
-define('DB_HOST','cifoplace.atwebpages.com');  // Host.
-define('DB_USER','4559281_carlos');       // Usuario.
+define('DB_HOST','fdb1028.awardspace.net');  // Host.
+define('DB_USER','4559281_cifoplaces');       // Usuario.
 define('DB_PASS','Ona1906@kx5');           // Password.
 define('DB_NAME','4559281_cifoplaces');  // Nombre de la base de datos.
 define('DB_PORT',  3306);       // Puerto.
